@@ -1,0 +1,5 @@
+/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/Reddit2.0/obj/Debug/net7.0/Reddit2.0.GeneratedMSBuildEditorConfig.editorconfig
+/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/Reddit2.0/obj/Debug/net7.0/Reddit2.0.AssemblyInfoInputs.cache
+/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/Reddit2.0/obj/Debug/net7.0/Reddit2.0.AssemblyInfo.cs
+/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/Reddit2.0/obj/Debug/net7.0/Reddit2.0.csproj.CoreCompileInputs.cache
+/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/Reddit2.0/obj/Debug/net7.0/Reddit2.0.MvcApplicationPartsAssemblyInfo.cache
