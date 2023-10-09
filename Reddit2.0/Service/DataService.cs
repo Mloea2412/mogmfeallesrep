@@ -19,12 +19,13 @@ namespace Reddit2._0.Service
             return db.Posts.ToList(); // Returnerer en liste af alle poster fra databasen ved at konvertere dem til en liste.
         }
 
+        /* FEJL SKAL UDBEDRES, DERFOR ER DEN UDKOMMENTERET
         // Henter en specifik post baseret på dens id
         public Post GetPostById()
         {
             return db.Posts.Where(p => p.PostId == postid).FirstOrDefault()!;
         }
-        
+        */
 
         // Henter alle kommentarer som en liste
         public List<Comment> GetAllComments()
