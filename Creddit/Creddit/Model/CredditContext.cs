@@ -16,11 +16,6 @@ namespace Creddit.Model
             DbPath = " bin/Creddit.db";
         }
 
-        public CredditContext()
-        {
-            DbPath = " bin/Creddit.db";
-        }
-
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite($"Data Source={DbPath}");
 

@@ -6,3 +6,11 @@
 /Users/marie-louise/Projects/Creddit/Creddit/obj/Debug/net7.0/Creddit.MvcApplicationPartsAssemblyInfo.cache
 /Users/marie-louise/Projects/Creddit/Creddit/obj/Debug/net7.0/Creddit.RazorAssemblyInfo.cache
 /Users/marie-louise/Projects/Creddit/Creddit/obj/Debug/net7.0/Creddit.RazorAssemblyInfo.cs
+/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/Creddit/Creddit/obj/Debug/net7.0/Creddit.csproj.AssemblyReference.cache
+/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/Creddit/Creddit/obj/Debug/net7.0/Creddit.GeneratedMSBuildEditorConfig.editorconfig
+/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/Creddit/Creddit/obj/Debug/net7.0/Creddit.AssemblyInfoInputs.cache
+/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/Creddit/Creddit/obj/Debug/net7.0/Creddit.AssemblyInfo.cs
+/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/Creddit/Creddit/obj/Debug/net7.0/Creddit.csproj.CoreCompileInputs.cache
+/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/Creddit/Creddit/obj/Debug/net7.0/Creddit.MvcApplicationPartsAssemblyInfo.cache
+/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/Creddit/Creddit/obj/Debug/net7.0/Creddit.RazorAssemblyInfo.cache
+/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/Creddit/Creddit/obj/Debug/net7.0/Creddit.RazorAssemblyInfo.cs

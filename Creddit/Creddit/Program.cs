@@ -92,7 +92,7 @@ app.MapGet("/api/posts", (DataService service) =>
 // POST PÅ ID
 app.MapGet("/api/post/{id}", (DataService service, int postid) =>
 {
-    return service.GetPost(postid);
+    return service.GetPost(id);
 });
 
 // COMMENTS
@@ -123,6 +123,8 @@ app.MapPost("/api/....", (DataService service, ......) =>
 
 })
 */
+// MANGLER RECORDS
+
 
 app.Run();
 

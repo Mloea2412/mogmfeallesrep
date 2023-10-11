@@ -23,7 +23,7 @@ namespace Creddit.Service
             if (post == null)
             {
                 User user1 = new User("M");
-                post = new Post { PostId = 1, Title = "Post om alverden", User = user1, Text = "En vigtig post om alverden", Downvote = 2, Upvote = 12, NumberOfVotes = 14 };
+                post = new Post { PostId = 1, Title = "Post om alverden", User = user1, Content = "En vigtig post om alverden", Downvote = 2, Upvote = 12, NumberOfVotes = 14 };
                 db.Add(post);
                 db.SaveChanges();
             }
@@ -31,7 +31,7 @@ namespace Creddit.Service
             Comment comment = db.Comments.FirstOrDefault()!;
             if (comment == null)
             {
-                comment = new Comment { CommentId = 1, Text = "Det lyder bare spændende", Downvote = 3, Upvote = 5, NumberOfVotes = 8 };
+                comment = new Comment { CommentId = 1, Content = "Det lyder bare spændende", Downvote = 3, Upvote = 5, NumberOfVotes = 8 };
                 db.Add(comment);
                 db.SaveChanges();
 
@@ -49,67 +49,131 @@ namespace Creddit.Service
                 db.Add(user3);
                 db.Add(user4);
                 db.SaveChanges();
-
             }
         }
 
-        // Henter alle poster som en liste
+        /*// Henter alle poster som en liste
         public List<Post> GetPosts()
         {
             return db.Posts.ToList(); // Returnerer en liste af alle poster fra databasen ved at konvertere dem til en liste.
         }
 
-        /* ET FORSØG PÅ INCLUDE HENTER ALLE POSTS
+        */
+
+        //ET FORSØG PÅ INCLUDE HENTER ALLE POSTS
          
         public List<Post> GetPosts() {
         return db.Posts.Include(c => c.Comments).ThenInclude(c => c.User).ToList();
-
         }
 
 
-        ET FORSØG PÅ INCLUDE HENTER ET SPECIFIKT POST
-
-
-        poblic Post GetPost(int id)
+        public Post GetPost(int id)
         {
-            return db.Posts.Include(c => c.Comments).ThenInclude(c => c.User).FirstOrDefault(p = p.PostId == id)
+            return db.Posts.Include(c => c.Comments).ThenInclude(c => c.User).FirstOrDefault(p = p.PostId == id);
         }
-         */
-
-
-        /* ET FORSØG PÅ INCLUDE MED POST POST
          
+
+
+       // CREATE POST
+        public string CreatePost(string title, User user, string content, int upvote, int downvote, int numberOfVotes, DateTime postTime) {
+
+        User user = db.Users.FirstOrDefault(a => a.UserId == user.UserId)!;
+        if(user==null){
+            //db.Users.Add()
+            return "User not found";//db.Posts.Add(new Post(title,user,text, upvote, downvote, numberOfVotes, DateTime.Now));
+        }
+        else{
+            Post post = new Post(title, user, content, upvote, downvote, numberOfVotes, DateTime.Now); 
+            db.Posts.Add(post);
+        }
+        db.SaveChanges();
+        return "Post created";
+
+        }
+
+        // CREATE COMMMENT
+         
+        public string CreateComment(string content, User user, int downvote, int upvote, int numberOfVotes, DateTime CommentTime,int postid) { //bruger id til at finde en specifik author- kan ikke lave nye authors.
+        Post post = db.Posts.FirstOrDefault(p => p.PostId == postid)!;
+        if (post = null) {
+            return "Post not found"
+        }
+
+        if (db == null) {
+            return "Database not initialized";
+        }
+        else 
+        {
+            Comment comment = new Comment(content, user,downvote,upvote,numberOfVotes,commentTime);
+            post.Comments.Add(comment);
+            db.Posts.Add(comment);
+            db.SaveChanges();
+        }
         
-        
-         */
+
+         public bool PostVoting(int postId, User user, bool UpvoteOrDownvote) 
+         {
+            var post = db.Posts.FirstOrDefault(p => p.postId == postId);
+            if (post == null) 
+            {
+                return false;
+            }
+
+            if (UpvoteOrDownvote == true) 
+            {
+                post.Upvote++;
+                post.NumberOfVotes++;
+                db.SaveChanges();
+
+                return true;
+            }
+
+            else if (UpvoteOrDownvote == false) 
+            {
+                post.Downvote--;
+                post.NumberOfVotes++;
+                db.SaveChanges();
+                
+                return false;
+            }
+         }
 
 
-        /* ET FORSØG PÅ INCLUDE MED POST/ID/COMMTNETS
-         
-         
-         
-         */
+        public bool CommentVoting(int commentId, User user, bool UpvoteOrDownvote)
+        {
+            {
+                var comment = db.Comments.FirstOrDefault(c = char.CommentId == commentId);
+                if (comment == null)
+                {
+                    return false;
+                }
+            }
 
+            if (UpvoteOrDownvote == true)
 
+            {
+                comment.Upvote++;
+                comment.NumberOfVotes++;
+                db.SaveChanges();
 
-        /* ET FORSØG PÅ PUT /POSTD/ID/UPVOTE
+                return true;
+            }
 
+            else if (UpvoteOrDownvote == false)
+            {
+                commentId.Downvote--:
+                comment.NumberOfVotes++;
+                db.SaveChanges();
 
+                return false;
+            }
+        }
 
-
-
-
-
-        // ET FORSØG PÅ PUT /POSTS/ID/COMMENTS/ID/UPVOTE
-         
-         */
-
-
-        public Post GetPost()
+        /*public Post GetPost()
         {
             return db.Posts.Where(p => p.PostId == postid).FirstOrDefault()!;
         }
-
+*/
 
         // Henter alle kommentarer som en liste
         public List<Comment> GetComments()

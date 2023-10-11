@@ -8,7 +8,7 @@ namespace Creddit.Model
         public int PostId { get; set; }
         public string Title { get; set; }
         public User User { get; set; }
-        public string Text { get; set; }
+        public string Content { get; set; }
         public int Upvote { get; set; }
         public int Downvote { get; set; }
         public int NumberOfVotes { get; set; }
@@ -16,11 +16,11 @@ namespace Creddit.Model
         public DateTime PostTime { get; set; }
         public List<Comment> Comments { get; set; } = new List<Comment>();
 
-        public Post(string title, User user, string text, int upvote, int downvote, int numberOfVotes, DateTime postTime)
+        public Post(string title, User user, string content, int upvote, int downvote, int numberOfVotes, DateTime postTime)
         {
             this.Title = title;
             this.User = user;
-            this.Text = text;
+            this.Content = content;
             this.Upvote = upvote;
             this.Downvote = downvote;
             this.NumberOfVotes = numberOfVotes;
@@ -32,7 +32,7 @@ namespace Creddit.Model
             PostId = 0;
             User = null;
             Title = "";
-            Text = "";
+            Content = "";
             Upvote = 0;
             Downvote = 0;
             PostTime = DateTime.Now;
