@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/marie-louise/Projects/Creddit/Creddit/Creddit.csproj": {}
+    "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/Creddit/Creddit/Creddit.csproj": {}
   },
   "projects": {
-    "/Users/marie-louise/Projects/Creddit/Creddit/Creddit.csproj": {
+    "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/Creddit/Creddit/Creddit.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/marie-louise/Projects/Creddit/Creddit/Creddit.csproj",
+        "projectUniqueName": "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/Creddit/Creddit/Creddit.csproj",
         "projectName": "Creddit",
-        "projectPath": "/Users/marie-louise/Projects/Creddit/Creddit/Creddit.csproj",
+        "projectPath": "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/Creddit/Creddit/Creddit.csproj",
         "packagesPath": "/Users/marie-louise/.nuget/packages/",
-        "outputPath": "/Users/marie-louise/Projects/Creddit/Creddit/obj/",
+        "outputPath": "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/Creddit/Creddit/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/marie-louise/.nuget/NuGet/NuGet.Config"
