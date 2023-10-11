@@ -59,7 +59,52 @@ namespace Creddit.Service
             return db.Posts.ToList(); // Returnerer en liste af alle poster fra databasen ved at konvertere dem til en liste.
         }
 
-        // Henter en specifik post baseret på dens id
+        /* ET FORSØG PÅ INCLUDE HENTER ALLE POSTS
+         
+        public List<Post> GetPosts() {
+        return db.Posts.Include(c => c.Comments).ThenInclude(c => c.User).ToList();
+
+        }
+
+
+        ET FORSØG PÅ INCLUDE HENTER ET SPECIFIKT POST
+
+
+        poblic Post GetPost(int id)
+        {
+            return db.Posts.Include(c => c.Comments).ThenInclude(c => c.User).FirstOrDefault(p = p.PostId == id)
+        }
+         */
+
+
+        /* ET FORSØG PÅ INCLUDE MED POST POST
+         
+        
+        
+         */
+
+
+        /* ET FORSØG PÅ INCLUDE MED POST/ID/COMMTNETS
+         
+         
+         
+         */
+
+
+
+        /* ET FORSØG PÅ PUT /POSTD/ID/UPVOTE
+
+
+
+
+
+
+
+        // ET FORSØG PÅ PUT /POSTS/ID/COMMENTS/ID/UPVOTE
+         
+         */
+
+
         public Post GetPost()
         {
             return db.Posts.Where(p => p.PostId == postid).FirstOrDefault()!;

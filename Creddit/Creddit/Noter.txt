@@ -1,3 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <configuration>
 </configuration>
+
+Der skal laves nogle endpoints og strukturen skal se sådan her ud med nogle includes
+
+Get
+
+/posts
+/posts/{id}
+
+
+Post
+
+/posts
+/ posts/{id}/comments
+
+put
+
+/posts/{id}/upvote
+/posts{id}/comments/{id}/upvote
