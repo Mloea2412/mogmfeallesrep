@@ -92,7 +92,7 @@ app.MapGet("/api/posts", (DataService service) =>
 // POST PÅ ID
 app.MapGet("/api/post/{id}", (DataService service, int postid) =>
 {
-    return service.GetPost(id);
+    return service.GetPost(postid);
 });
 
 // COMMENTS
@@ -102,19 +102,22 @@ app.MapGet("/api/comments", (DataService service) =>
     return service.GetComments();
 });
 
+// COMMENTS PÅ ID
 app.MapGet("/api/commment/{id}", (DataService service, int commentid) =>
 {
     return service.GetComment(commentid);
 });
 
+// USERS
 app.MapGet("/api/users", (DataService service) =>
 {
     return service.GetUsers();
 });
 
+// USERS PÅ ID
 app.MapGet("/api/user/{id}", (DataService service, int userid) =>
 {
-    return service.GetUsers(userid);
+    return service.GetUserId(userid);
 });
 
 /*

@@ -1,6 +1,7 @@
 ﻿using System;
 using Creddit.Model;
 using System.Collections.Generic; // Importerer namespace for at arbejde med lister.
+using Microsoft.EntityFrameworkCore;
 
 
 namespace Creddit.Service
@@ -22,32 +23,25 @@ namespace Creddit.Service
             Post post = db.Posts.FirstOrDefault()!;
             if (post == null)
             {
-                User user1 = new User("M");
-                post = new Post { PostId = 1, Title = "Post om alverden", User = user1, Content = "En vigtig post om alverden", Downvote = 2, Upvote = 12, NumberOfVotes = 14 };
-                db.Add(post);
-                db.SaveChanges();
-            }
-
-            Comment comment = db.Comments.FirstOrDefault()!;
-            if (comment == null)
-            {
-                comment = new Comment { CommentId = 1, Content = "Det lyder bare spændende", Downvote = 3, Upvote = 5, NumberOfVotes = 8 };
-                db.Add(comment);
-                db.SaveChanges();
-
-            }
-
-            User user = db.Users.FirstOrDefault();
-            if (user == null)
-            {
+                Post post2 = db.Posts.FirstOrDefault()!;
                 User user1 = new User("Testuser");
                 User user2 = new User("Magnus");
                 User user3 = new User("M-L");
-                User user4 = new User("TestUser4");
-                db.Add(user1);
-                db.Add(user2);
-                db.Add(user3);
-                db.Add(user4);
+                User user4 = new User("GithubHater22");
+
+                post = new Post("Github", user1, "Github er et fantastisk værktøj som gør mit liv lettere", 12, 2, 14, DateTime.Now);
+                Comment comment1 = new Comment("Det har du ret i! Jeg elsker Github!!", user1, 5, 3, 8, DateTime.Now);
+                Comment comment2 = new Comment("Github er spild af tid og giver ikke mening at bruge", user2, 0, 8, 8, DateTime.Now);
+                Comment comment3 = new Comment("Github virker ikke altid, men er godt når det virker", user3, 5, 2, 7, DateTime.Now);
+
+                post.Comments.Add(comment1);
+                post.Comments.Add(comment2);
+                post.Comments.Add(comment3);
+                db.Posts.Add(post);
+                post2 = new Post("#!$@ Github!!", user4, "Jeg hader github. Det er et dårligt værktøj!!!", 1, 3, 4, DateTime.Now);
+                Comment comment4 = new Comment("Ej du har bare ret og er super smart", user2, 0, 2, 2, DateTime.Now);
+                post2.Comments.Add(comment4);
+                db.Posts.Add(post2);
                 db.SaveChanges();
             }
         }
@@ -61,148 +55,60 @@ namespace Creddit.Service
         */
 
         //ET FORSØG PÅ INCLUDE HENTER ALLE POSTS
-         
+
         public List<Post> GetPosts() {
-        return db.Posts.Include(c => c.Comments).ThenInclude(c => c.User).ToList();
+            return db.Posts.Include(c => c.Comments).ThenInclude(c => c.User).ToList();
         }
 
 
         public Post GetPost(int id)
         {
-            return db.Posts.Include(c => c.Comments).ThenInclude(c => c.User).FirstOrDefault(p = p.PostId == id);
+            return db.Posts.Include(c => c.Comments).ThenInclude(c => c.User).FirstOrDefault(c=> c.PostId == id);
         }
-         
 
 
-       // CREATE POST
-        public string CreatePost(string title, User user, string content, int upvote, int downvote, int numberOfVotes, DateTime postTime) {
 
-        User user = db.Users.FirstOrDefault(a => a.UserId == user.UserId)!;
-        if(user==null){
-            //db.Users.Add()
-            return "User not found";//db.Posts.Add(new Post(title,user,text, upvote, downvote, numberOfVotes, DateTime.Now));
-        }
-        else{
-            Post post = new Post(title, user, content, upvote, downvote, numberOfVotes, DateTime.Now); 
-            db.Posts.Add(post);
-        }
-        db.SaveChanges();
-        return "Post created";
+        // CREATE POST
+        public string CreatePost(string title, User user, string content, int upvote, int downvote, int numberOfVotes, DateTime postTime)
+        {
+
+            Post localu = db.Posts.Include(a=> a.User == user).FirstOrDefault(a => a.User.UserId == user.UserId)!;
+            if (localu  == null) {
+                //db.Users.Add()
+                return "User not found";//db.Posts.Add(new Post(title,user,text, upvote, downvote, numberOfVotes, DateTime.Now));
+            }
+            else {
+                Post post = new Post(title, user, content, upvote, downvote, numberOfVotes, postTime);
+                db.Posts.Add(post);
+            }
+            db.SaveChanges();
+            return "Post created";
 
         }
 
         // CREATE COMMMENT
-         
-        public string CreateComment(string content, User user, int downvote, int upvote, int numberOfVotes, DateTime CommentTime,int postid) { //bruger id til at finde en specifik author- kan ikke lave nye authors.
-        Post post = db.Posts.FirstOrDefault(p => p.PostId == postid)!;
-        if (post = null) {
-            return "Post not found"
-        }
 
-        if (db == null) {
-            return "Database not initialized";
-        }
-        else 
-        {
-            Comment comment = new Comment(content, user,downvote,upvote,numberOfVotes,commentTime);
-            post.Comments.Add(comment);
-            db.Posts.Add(comment);
-            db.SaveChanges();
-        }
-        
+        public string CreateComment(string content, User user, int downvote, int upvote, int numberOfVotes, DateTime CommentTime, int postid)
+        { 
+            Post post = db.Posts.Include(c => c.Comments).ThenInclude(u => u.User == user).FirstOrDefault(p => p.PostId == postid)!;
 
-         public bool PostVoting(int postId, User user, bool UpvoteOrDownvote) 
-         {
-            var post = db.Posts.FirstOrDefault(p => p.postId == postId);
-            if (post == null) 
+                        if (db == null)
             {
-                return false;
+                return "Database not initialized";
             }
-
-            if (UpvoteOrDownvote == true) 
+            else
             {
-                post.Upvote++;
-                post.NumberOfVotes++;
+                Comment comment = new Comment(content, user, downvote, upvote, numberOfVotes, CommentTime);
+                post.Comments.Add(comment);
                 db.SaveChanges();
-
-                return true;
-            }
-
-            else if (UpvoteOrDownvote == false) 
-            {
-                post.Downvote--;
-                post.NumberOfVotes++;
-                db.SaveChanges();
-                
-                return false;
-            }
-         }
-
-
-        public bool CommentVoting(int commentId, User user, bool UpvoteOrDownvote)
-        {
-            {
-                var comment = db.Comments.FirstOrDefault(c = char.CommentId == commentId);
-                if (comment == null)
-                {
-                    return false;
-                }
-            }
-
-            if (UpvoteOrDownvote == true)
-
-            {
-                comment.Upvote++;
-                comment.NumberOfVotes++;
-                db.SaveChanges();
-
-                return true;
-            }
-
-            else if (UpvoteOrDownvote == false)
-            {
-                commentId.Downvote--:
-                comment.NumberOfVotes++;
-                db.SaveChanges();
-
-                return false;
+                return "Comment commented";
             }
         }
 
-        /*public Post GetPost()
-        {
-            return db.Posts.Where(p => p.PostId == postid).FirstOrDefault()!;
-        }
-*/
-
-        // Henter alle kommentarer som en liste
-        public List<Comment> GetComments()
-        {
-            return db.Comments.ToList(); // Returnerer en liste af alle kommentarer fra databasen ved at konvertere dem til en liste.
-        }
-
-        // Henter en specifik kommentar baseret på dens id
-        public Comment GetComment(int commentid)
-        {
-            return db.Comments.Where(c => c.CommentId == commentid).FirstOrDefault()!; // Henter en kommentar fra databasen baseret på dens id og returnerer den.
-        }
-
-        // Henter alle brugere som en liste
-        public List<User> GetUsers()
-        {
-            return db.Users.ToList(); // Returnerer en liste af alle brugere fra databasen ved at konvertere dem til en liste.
-        }
-
-        // Henter en specifik bruger baseret på dens id
-        public User GetUserId(int userid)
-        {
-            return db.Users.Where(u => u.UserId == userid).FirstOrDefault()!; // Henter en bruger fra databasen baseret på dens id og returnerer den.
-        }
-
-        // Håndterer op- og nedstemninger på en post
         public bool PostVoting(int postId, User user, bool UpvoteOrDownvote)
         {
-            var post = db.Posts.FirstOrDefault(p => p.PostId == postId); // Finder posten baseret på dens id.
+            Post post = db.Posts.Include(u => u.User == user).FirstOrDefault(p => p.PostId == postId);
+            // Finder posten baseret på dens id.
             if (post == null)
             {
                 return false; // Hvis posten ikke findes, returneres falsk.
@@ -227,6 +133,69 @@ namespace Creddit.Service
 
             return true; // Returnerer sand, hvis op- eller nedstemningen blev behandlet korrekt.
         }
+
+
+        public bool CommentVoting(int commentId, User user, bool UpvoteOrDownvote)
+            {
+            Post comment = db.Posts.Include(c => c.Comments).ThenInclude(u => u.User == user).FirstOrDefault(c => c.Comment.CommentId == commentId);
+                if (comment == null)
+                {
+                    return false;
+                }
+                if (UpvoteOrDownvote == true)
+
+                {
+                    comment.Upvote++;
+                    comment.NumberOfVotes++;
+                    db.SaveChanges();
+                    return true;
+                }
+
+                else if (UpvoteOrDownvote == false)
+                {
+                    comment.Downvote--;
+                    comment.NumberOfVotes++;
+                    db.SaveChanges();
+                    return false;
+                }
+                    return true;
+            }
+
+
+
+            /*public Post GetPost()
+            {
+                return db.Posts.Where(p => p.PostId == postid).FirstOrDefault()!;
+            }
+    */
+
+            // Henter alle kommentarer som en liste
+            public List<Post> GetComments()
+            {
+                return db.Posts.Include(c => c.Comments).ToList(); // Returnerer en liste af alle kommentarer fra databasen ved at konvertere dem til en liste.
+            }
+
+            // Henter en specifik kommentar baseret på dens id
+            public Post GetComment(int commentid)
+            {
+                return db.Posts.Include(c => c.Comments).FirstOrDefault(c => c.Comment.CommentId == commentid)!; // Henter en kommentar fra databasen baseret på dens id og returnerer den.
+            }
+
+            // Henter alle brugere som en liste
+            public List<Post> GetUsers()
+            {
+                return db.Posts.Include(u => u.User).ToList(); // Returnerer en liste af alle brugere fra databasen ved at konvertere dem til en liste.
+            }
+
+            // Henter en specifik bruger baseret på dens id
+            public Post GetUserId(int userid)
+            {
+                return db.Posts.Include(u => u.User).FirstOrDefault(u => u.User.UserId == userid)!; // Henter en bruger fra databasen baseret på dens id og returnerer den.
+            }
+
+            // Håndterer op- og nedstemninger på en post
+            
+        }
     }
-}
+
 

@@ -11,7 +11,7 @@ namespace Creddit.Model
         public int NumberOfVotes { get; set; }
         public DateTime CommentTime { get; set; }
 
-        public Comment(string content, User user, int downvote, int upvote, int numberOfVotes, DateTime commentTime)
+        public Comment(string content, User user, int upvote, int downvote, int numberOfVotes, DateTime commentTime)
         {
             this.User = user;
             this.Content = content;
