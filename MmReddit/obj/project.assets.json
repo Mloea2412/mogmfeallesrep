@@ -1305,11 +1305,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/MmReddit/MmReddit.csproj",
+      "projectUniqueName": "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/MmReddit/MmReddit.csproj",
       "projectName": "MmReddit",
-      "projectPath": "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/MmReddit/MmReddit.csproj",
+      "projectPath": "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/MmReddit/MmReddit.csproj",
       "packagesPath": "/Users/marie-louise/.nuget/packages/",
-      "outputPath": "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/MmReddit/obj/",
+      "outputPath": "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/MmReddit/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/marie-louise/.nuget/NuGet/NuGet.Config"

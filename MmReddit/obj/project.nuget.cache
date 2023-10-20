@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "9s4ZdfSzZkb9YNSOkjExWRSsXmXHPQzjdaZKBG6BRCW4tuuNKNhh4ZBcwR9nalgbxfda3FGBIsJYIrrFNxNxxg==",
+  "dgSpecHash": "IOiYfUV0y9zYF3sDiL0QUSgqHvwgsECHzcjRii5FDD3y9JhyUc7+DHlI+bnpS7ETcFi4ysAxDNT0LODLGfA99w==",
   "success": true,
-  "projectFilePath": "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/MmReddit/MmReddit.csproj",
+  "projectFilePath": "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/MmReddit/MmReddit.csproj",
   "expectedPackageFiles": [
     "/Users/marie-louise/.nuget/packages/humanizer.core/2.14.1/humanizer.core.2.14.1.nupkg.sha512",
     "/Users/marie-louise/.nuget/packages/microsoft.aspnetcore.diagnostics.entityframeworkcore/7.0.12/microsoft.aspnetcore.diagnostics.entityframeworkcore.7.0.12.nupkg.sha512",

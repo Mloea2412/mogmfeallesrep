@@ -23,6 +23,31 @@ namespace MmReddit.Model
             DbPath = "bin/MmReddit.db";
         }
 
+
+        public void AddSampleData()
+        {
+            // Opret en bruger
+            var user = new User
+            {
+                Username = "BrugerNavn"
+            };
+
+            // Tilføj brugeren til DbContext og gem ændringer i databasen
+            Users.Add(user);
+            SaveChanges();
+
+            // Opret en post og tilknyt den til brugeren
+            var post = new Post
+            {
+                Title = "Titel for post",
+                Content = "Indhold for post",
+                User = user // Tilknyt posten til brugeren
+            };
+
+            Posts.Add(post);
+            SaveChanges();
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite($"Data Source={DbPath}");
 
