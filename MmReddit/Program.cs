@@ -54,13 +54,27 @@ app.MapGet("/api/posts", (DataService service) =>
 });
 
 
-app.MapGet("/api/user", (DataService service) =>
+app.MapGet("/api/users", (DataService service) =>
 {
     return service.GetUsers();
 });
 
+app.MapGet("/api/comment/{id}", (DataService service, int id) =>
+{
+    return service.GetComment(id);
+});   
+app.MapGet("/api/post/{id}", (DataService service, int id) =>
+{
+    return service.GetPost(id);
+});
 
-app.MapPost("/api/post/{id}", (DataService service, PostDTO data) =>
+app.MapGet("/api/user/{id}", (DataService services, int id) =>
+{
+    return services.GetUserId(id);
+});
+
+
+app.MapPost("/api/post/", (DataService service, PostDTO data) =>
 {
     return service.CreatePost(data.title, data.user, data.content, data.upvotes, data.downvotes, data.numberOfVotes, data.postTime);
 });

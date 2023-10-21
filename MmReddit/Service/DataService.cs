@@ -3,6 +3,7 @@ using MmReddit.Model;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.Hosting;
 
 namespace MmReddit.Service
 {
@@ -20,7 +21,7 @@ namespace MmReddit.Service
         // HENTER ALLE KOMMENTARENE UD SOM EN LISTE MED TILHØRENDE OPLYSNINGER OG KOMMENTARER
         public List<Post> GetPosts()
         {
-            return db.Posts.Include(p => p.Comments).ThenInclude(p => p.User).ToList();
+            return db.Posts.Include(p => p.Comments).ThenInclude(u => u.User).Include(p => p.User).ToList();
         }
 
         // HENTER ALLE BRUGERNE
@@ -29,37 +30,27 @@ namespace MmReddit.Service
             return db.Users.ToList();
         }
 
+        public List<Comment> GetComments()
+        {
+            return db.Comments.ToList();
+        }
         // DER BLIVER IKKE HENTET USERID MEN USER = NULL NÅR DER BLIVER HENTET POSTS. HVERKEN VED ALLE PÅ DETS ID
         // OG PÅ COMMENT ER POSIID = NULL
 
         // HENTER POST UD FRA DETS ID
         public Post GetPost(int id)
         {
-            return db.Posts.Include(p => p.Comments).ThenInclude(p => p.User).FirstOrDefault(p => p.PostId == id)!;
+            return db.Posts.Include(p => p.Comments).ThenInclude(u => u.User).Include(p => p.User).FirstOrDefault(p => p.PostId == id)!;
         }
-       
-
-        // LAVES FÆRDIG SÅ DEN VIRKER
-        public string CreatePost(string title, User user, string content, int upvote, int downvote, int numberOfVotes, DateTime postTime)
+        public User GetUserId(int userid)
         {
-
-            User tempuser = db.Users.FirstOrDefault(a => a.UserId == user.UserId)!;
-            if (tempuser == null)
-            {
-                //db.Users.Add()
-                db.Posts.Add(new Post(title, user, content, upvote, downvote, numberOfVotes, DateTime.Now));
-            }
-            else
-            {
-                db.Posts.Add(new Post(title, tempuser, content, upvote, downvote, numberOfVotes, DateTime.Now));
-            }
-            db.SaveChanges();
-            return "Post created";
-
+            return db.Users.FirstOrDefault(u => u.UserId == userid)!; // Henter en bruger fra databasen baseret på dens id og returnerer den.
+        }
+        public Comment GetComment(int commentid)
+        {
+            return db.Comments.Include(u => u.User).FirstOrDefault(c => c.CommentId == commentid)!; // Henter en kommentar fra databasen baseret på dens id og returnerer den.
         }
 
-        // SKAL LAVES FÆRDIG SÅ DEN VIRKER
-        /*// CREATE POST
         public string CreatePost(string title, User user, string content, int upvotes, int downvotes, int numberOfVotes, DateTime postTime)
         {
             // Kontrollér, om brugeren findes i databasen
@@ -77,13 +68,10 @@ namespace MmReddit.Service
 
             return "Post oprettet";
         }
-        */
-
-        // SKAL LAVES FÆRDIG
         // CreateComment
         public string CreateComment(string content, int upvotes, int downvotes, int numberOfVotes, int postid, User user, DateTime CommentTime)
         {
-            var post = db.Posts.Where(p => p.PostId == postid).FirstOrDefault();
+            Post post = db.Posts.FirstOrDefault(p => p.PostId == postid);
             if (post == null)
             {
                 return "Post not found";
@@ -94,9 +82,9 @@ namespace MmReddit.Service
                 return "Database not initialized";
             }
 
-            post.Comments.Add(new Comment(content, downvotes, upvotes, numberOfVotes, user, DateTime.Now));
+            post.Comments.Add(new Comment(content, downvotes, upvotes, numberOfVotes, user, CommentTime));
             db.SaveChanges();
-            return "Comment created"; return "Comment created";
+            return "Comment created";
         }
 
 
@@ -142,48 +130,7 @@ namespace MmReddit.Service
                 db.Add(comment);
                 db.SaveChanges();
             }
-
-        }
-
-        
+            }
     }
-
-
 }
-
-
-/////////// TIDLIGERE BENYTTET KODE /////////
-///  /*//henter post og returner dem som en liste
-/*public List<Comment> Comments()
-{
-    return db.Comments.ToList();
-}
-
-// Henter post på dets id
-public Post Post(int postid)
-{
-    return db.Posts.Where(p => p.PostId == postid).FirstOrDefault()!;
-
-}
-
-// Henter kommentaren på dets id
-public Comment Comment(int commentid)
-{
-    return db.Comments.Where(p => p.CommentId == commentid).FirstOrDefault()!;
-
-}
-
-// Henter bruger på dets id
-public User User(int userid)
-{
-    return db.Users.Where(p => p.UserId == userid).FirstOrDefault()!;
-}
-
-// Henter alle brugere
-public List<User> Users()
-{
-    return db.Users.ToList();
-}
-*/
-
 

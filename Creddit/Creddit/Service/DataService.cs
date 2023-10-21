@@ -15,10 +15,7 @@ namespace Creddit.Service
             this.db = db; // Konstruktøren modtager en RedditContext-injektion og tildeler den til det private felt.
         }
 
-
-        // SEED DATA HER - ET BUD PÅ SEEDDATA
-
-        public void SeedData()
+        public void SeedData() //Seeder Data ind i vores database, hvis der ikke er noget i den.
         {
             Post post = db.Posts.FirstOrDefault()!;
             if (post == null)
@@ -46,28 +43,6 @@ namespace Creddit.Service
             }
         }
 
-        /*// Henter alle poster som en liste
-        public List<Post> GetPosts()
-        {
-            return db.Posts.ToList(); // Returnerer en liste af alle poster fra databasen ved at konvertere dem til en liste.
-        }
-
-        */
-
-        //ET FORSØG PÅ INCLUDE HENTER ALLE POSTS
-
-        public List<Post> GetPosts() {
-            return db.Posts.Include(c => c.Comments).ThenInclude(c => c.User).ToList();
-        }
-
-
-        public Post GetPost(int id)
-        {
-            return db.Posts.Include(c => c.Comments).ThenInclude(c => c.User).FirstOrDefault(c=> c.PostId == id);
-        }
-
-
-
         // CREATE POST
         public string CreatePost(string title, User user, string content, int upvote, int downvote, int numberOfVotes, DateTime postTime)
         {
@@ -83,11 +58,9 @@ namespace Creddit.Service
             }
             db.SaveChanges();
             return "Post created";
-
         }
-
+        
         // CREATE COMMMENT
-
         public string CreateComment(string content, User user, int downvote, int upvote, int numberOfVotes, DateTime CommentTime, int postid)
         { 
             Post post = db.Posts.Include(c => c.Comments).ThenInclude(u => u.User == user).FirstOrDefault(p => p.PostId == postid)!;
@@ -104,8 +77,42 @@ namespace Creddit.Service
                 return "Comment commented";
             }
         }
+            // Henter alle poster som en liste
+            public List<Post> GetPosts()
+            {
+                return db.Posts.Include(c => c.Comments).ThenInclude(c => c.User).ToList();
+            }
 
-        public bool PostVoting(int postId, User user, bool UpvoteOrDownvote)
+            // Henter specifikt post
+            public Post GetPost(int Postid)
+            {
+                return db.Posts.Include(c => c.Comments).ThenInclude(c => c.User).FirstOrDefault(c => c.PostId == Postid);
+            }
+            // Henter alle kommentarer som en liste
+            public List<Post> GetComments()
+            {
+                return db.Posts.Include(c => c.Comments).ToList(); // Returnerer en liste af alle kommentarer fra databasen ved at konvertere dem til en liste.
+            }
+
+            // Henter en specifik kommentar baseret på dens id
+            public Post GetComment(int commentid)
+            {
+                return db.Posts.Include(c => c.Comments).FirstOrDefault(c => c.Comment.CommentId == commentid)!; // Henter en kommentar fra databasen baseret på dens id og returnerer den.
+            }
+
+            // Henter alle brugere som en liste
+            public List<Post> GetUsers()
+            {
+                return db.Posts.Include(u => u.User).ToList(); // Returnerer en liste af alle brugere fra databasen ved at konvertere dem til en liste.
+            }
+
+            // Henter en specifik bruger baseret på dens id
+            public Post GetUserId(int userid)
+            {
+                return db.Posts.Include(u => u.User).FirstOrDefault(u => u.User.UserId == userid)!; // Henter en bruger fra databasen baseret på dens id og returnerer den.
+            }
+     // Håndterer op- og nedstemninger på en post
+     public bool PostVoting(int postId, User user, bool UpvoteOrDownvote)
         {
             Post post = db.Posts.Include(u => u.User == user).FirstOrDefault(p => p.PostId == postId);
             // Finder posten baseret på dens id.
@@ -134,68 +141,33 @@ namespace Creddit.Service
             return true; // Returnerer sand, hvis op- eller nedstemningen blev behandlet korrekt.
         }
 
-
-        public bool CommentVoting(int commentId, User user, bool UpvoteOrDownvote)
-            {
+     // Håndterer op- og nedstemninger på en comment
+     public bool CommentVoting(int commentId, User user, bool UpvoteOrDownvote)
+        {
             Post comment = db.Posts.Include(c => c.Comments).ThenInclude(u => u.User == user).FirstOrDefault(c => c.Comment.CommentId == commentId);
-                if (comment == null)
-                {
-                    return false;
-                }
-                if (UpvoteOrDownvote == true)
-
-                {
-                    comment.Upvote++;
-                    comment.NumberOfVotes++;
-                    db.SaveChanges();
-                    return true;
-                }
-
-                else if (UpvoteOrDownvote == false)
-                {
-                    comment.Downvote--;
-                    comment.NumberOfVotes++;
-                    db.SaveChanges();
-                    return false;
-                }
-                    return true;
-            }
-
-
-
-            /*public Post GetPost()
+            if (comment == null)
             {
-                return db.Posts.Where(p => p.PostId == postid).FirstOrDefault()!;
+                return false;
             }
-    */
+            if (UpvoteOrDownvote == true)
 
-            // Henter alle kommentarer som en liste
-            public List<Post> GetComments()
             {
-                return db.Posts.Include(c => c.Comments).ToList(); // Returnerer en liste af alle kommentarer fra databasen ved at konvertere dem til en liste.
+                comment.Upvote++;
+                comment.NumberOfVotes++;
+                db.SaveChanges();
+                return true;
             }
 
-            // Henter en specifik kommentar baseret på dens id
-            public Post GetComment(int commentid)
+            else if (UpvoteOrDownvote == false)
             {
-                return db.Posts.Include(c => c.Comments).FirstOrDefault(c => c.Comment.CommentId == commentid)!; // Henter en kommentar fra databasen baseret på dens id og returnerer den.
+                comment.Downvote--;
+                comment.NumberOfVotes++;
+                db.SaveChanges();
+                return false;
             }
-
-            // Henter alle brugere som en liste
-            public List<Post> GetUsers()
-            {
-                return db.Posts.Include(u => u.User).ToList(); // Returnerer en liste af alle brugere fra databasen ved at konvertere dem til en liste.
-            }
-
-            // Henter en specifik bruger baseret på dens id
-            public Post GetUserId(int userid)
-            {
-                return db.Posts.Include(u => u.User).FirstOrDefault(u => u.User.UserId == userid)!; // Henter en bruger fra databasen baseret på dens id og returnerer den.
-            }
-
-            // Håndterer op- og nedstemninger på en post
-            
+            return true;
         }
     }
+}
 
 
