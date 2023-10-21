@@ -16,41 +16,58 @@ namespace MmReddit.Service
             this.db = db;
         }
 
-        public List<Post> Posts()
-        {
-            return db.Posts.ToList();
-        }
 
-        // Henter alle kommentarer som en liste
+        // HENTER ALLE KOMMENTARENE UD SOM EN LISTE MED TILHØRENDE OPLYSNINGER OG KOMMENTARER
         public List<Post> GetPosts()
         {
             return db.Posts.Include(p => p.Comments).ThenInclude(p => p.User).ToList();
         }
 
+        // HENTER ALLE BRUGERNE
         public List<User> GetUsers()
         {
             return db.Users.ToList();
         }
 
+        // DER BLIVER IKKE HENTET USERID MEN USER = NULL NÅR DER BLIVER HENTET POSTS. HVERKEN VED ALLE PÅ DETS ID
+        // OG PÅ COMMENT ER POSIID = NULL
 
-        // Henter den specifike post ud fra dets Id
+        // HENTER POST UD FRA DETS ID
         public Post GetPost(int id)
         {
-            return db.Posts.Include(p => p.Comments).ThenInclude(p => p.User).FirstOrDefault(p => p.PostId == id);
+            return db.Posts.Include(p => p.Comments).ThenInclude(p => p.User).FirstOrDefault(p => p.PostId == id)!;
+        }
+       
+
+        // LAVES FÆRDIG SÅ DEN VIRKER
+        public string CreatePost(string title, User user, string content, int upvote, int downvote, int numberOfVotes, DateTime postTime)
+        {
+
+            User tempuser = db.Users.FirstOrDefault(a => a.UserId == user.UserId)!;
+            if (tempuser == null)
+            {
+                //db.Users.Add()
+                db.Posts.Add(new Post(title, user, content, upvote, downvote, numberOfVotes, DateTime.Now));
+            }
+            else
+            {
+                db.Posts.Add(new Post(title, tempuser, content, upvote, downvote, numberOfVotes, DateTime.Now));
+            }
+            db.SaveChanges();
+            return "Post created";
+
         }
 
-
-
-        // CREATE POST
+        // SKAL LAVES FÆRDIG SÅ DEN VIRKER
+        /*// CREATE POST
         public string CreatePost(string title, User user, string content, int upvotes, int downvotes, int numberOfVotes, DateTime postTime)
         {
             // Kontrollér, om brugeren findes i databasen
-            User user1 = db.Users.FirstOrDefault(u => u.UserId == user.UserId);
+            User user1 = db.Users.FirstOrDefault(u => u.UserId == user.UserId)!;
             if (user1 == null)
             {
                 return "Bruger ikke fundet";
             }
-
             // Opret et nyt Post-objekt
             Post nyPost = new Post(title, user1, content, upvotes, downvotes, numberOfVotes, postTime);
 
@@ -58,54 +75,81 @@ namespace MmReddit.Service
             db.Posts.Add(nyPost);
             db.SaveChanges();
 
-            return "Opstilling oprettet";
+            return "Post oprettet";
         }
+        */
 
-
+        // SKAL LAVES FÆRDIG
         // CreateComment
-        public string CreateComment(string content, int upvotes, int downvotes, int postid, User user, DateTime commentTime)
+        public string CreateComment(string content, int upvotes, int downvotes, int numberOfVotes, int postid, User user, DateTime CommentTime)
         {
-            // Find den ønskede post i databasen
-            Post post = db.Posts.Include(p => p.Comments).FirstOrDefault(p => p.PostId == postid);
-
+            var post = db.Posts.Where(p => p.PostId == postid).FirstOrDefault();
             if (post == null)
             {
                 return "Post not found";
             }
 
-            // Opret en ny kommentar
-            Comment comment = new Comment(content, upvotes, downvotes, user);
+            if (db == null)
+            {
+                return "Database not initialized";
+            }
 
-            // Tilføj kommentaren til posten
-            post.Comments.Add(comment);
-
-            // Gem ændringerne i databasen
+            post.Comments.Add(new Comment(content, downvotes, upvotes, numberOfVotes, user, DateTime.Now));
             db.SaveChanges();
-
-            return "Comment created";
+            return "Comment created"; return "Comment created";
         }
 
+
+        // SKAL LAVES FÆRDIG SÅ DET VIRKER MED KOMMENTARENE, AT DE HAR ET POSTID
         public void SeedData()
         {
-            User user = db.Users.FirstOrDefault()!;
-            if (user == null)
+            User user1 = new User { Username = "M-L" };
+            if (db.Users.FirstOrDefault(u => u.Username == user1.Username) == null)
             {
-                User user2 = new User("M");
-                User user3 = new User("N");
-                User user4 = new User("Magnus");
-                db.Add(user2);
-                db.Add(user3);
-                db.Add(user4);
+                db.Add(user1);
                 db.SaveChanges();
             }
+
+            Post post = new Post
+            {
+                Title = "Sikke dejligt vejr",
+                User = user1,
+                Content = "Hvad tænker I?",
+                Downvotes = 0,
+                Upvotes = 10,
+                NumberOfVotes = 10
+            };
+
+            if (db.Posts.FirstOrDefault(p => p.Title == post.Title) == null)
+            {
+                db.Add(post);
+                db.SaveChanges();
+            }
+
+            Comment comment = new Comment
+            {
+                Content = "Vi blæser væk",
+                Downvotes = 4,
+                Upvotes = 5,
+                NumberOfVotes = 9,
+                User = user1, // Brug den samme bruger som ejer indlægget
+                CommentTime = DateTime.Now // Tilføj tidspunkt
+            };
+
+            // SKAL KOBLES PÅ, AT KOMMENTAREN TILHØRE OPSLAGET. DER SKAL ET POSTID PÅ
+            if (db.Comments.FirstOrDefault(c => c.Content == comment.Content) == null)
+            {
+                db.Add(comment);
+                db.SaveChanges();
+            }
+
         }
 
-
+        
     }
 
 
 }
-
 
 
 /////////// TIDLIGERE BENYTTET KODE /////////
@@ -143,52 +187,3 @@ public List<User> Users()
 */
 
 
-
-/*public void SeedData()
-        {
-            if (!db.Posts.Any())
-            {
-                User user1 = new User("Testuser");
-                User user2 = new User("Magnus");
-                User user3 = new User("M-L");
-                User user4 = new User("GithubHater22");
-
-                Post post1 = new Post("Github", user1, "Github er et fantastisk værktøj som gør mit liv lettere", 12, 2, 14, DateTime.Now);
-                Comment comment1 = new Comment("Det har du ret i! Jeg elsker Github!!", user1, 5, 3);
-                Comment comment2 = new Comment("Github er spild af tid og giver ikke mening at bruge", user2, 0, 8);
-                Comment comment3 = new Comment("Github virker ikke altid, men er godt når det virker", user3, 5, 2);
-
-                post1.Comments.Add(comment1);
-                post1.Comments.Add(comment2);
-                post1.Comments.Add(comment3);
-
-                Post post2 = new Post("#!$@ Github!!", user4, "Jeg hader Github. Det er et dårligt værktøj!!!", 1, 3, 4, DateTime.Now);
-                Comment comment4 = new Comment("Ej, du har bare ret og er super smart", user2, 2, 0);
-                post2.Comments.Add(comment4);
-
-                db.Posts.Add(post1);
-                db.Posts.Add(post2);
-                db.SaveChanges();
-            }
-        }
-        */
-
-
-/*public void SeedData()
-{
-    if (!db.Users.Any())
-    {
-        User user = new User("Testuser");
-        db.Users.Add(user);
-
-        Post post = new Post("Min første post", user, "Dette er min første post på Reddit.", 10, 2, 12, DateTime.Now);
-        db.Posts.Add(post);
-
-        Comment comment = new Comment("Hej verden!", user, 3, 1);
-        post.Comments.Add(comment);
-
-        db.SaveChanges();
-    }
-}
-
-*/

@@ -23,11 +23,17 @@ namespace MmReddit.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<DateTime>("CommentTime")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Downvotes")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("NumberOfVotes")
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("PostId")
@@ -54,9 +60,6 @@ namespace MmReddit.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CommentId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -81,8 +84,6 @@ namespace MmReddit.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("PostId");
-
-                    b.HasIndex("CommentId");
 
                     b.HasIndex("UserId");
 
@@ -121,12 +122,6 @@ namespace MmReddit.Migrations
 
             modelBuilder.Entity("MmReddit.Model.Post", b =>
                 {
-                    b.HasOne("MmReddit.Model.Comment", "comment")
-                        .WithMany()
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("MmReddit.Model.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -134,8 +129,6 @@ namespace MmReddit.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-
-                    b.Navigation("comment");
                 });
 
             modelBuilder.Entity("MmReddit.Model.Post", b =>

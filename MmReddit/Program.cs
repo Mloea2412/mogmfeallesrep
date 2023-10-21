@@ -31,37 +31,55 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseCors(AllowSomeStuff);
 
+using (var scope = app.Services.CreateScope())
+{
+    var dataService = scope.ServiceProvider.GetRequiredService<DataService>();
+    dataService.SeedData();
+}
+
+using (var db = new MmRedditContext())
+{
+
+}
+
 app.Use(async (context, next) =>
 {
     context.Response.ContentType = "application/json; charset=utf-8";
     await next(context);
 });
 
-app.MapGet("api/posts", (DataService service) =>
+app.MapGet("/api/posts", (DataService service) =>
 {
-    return service.Posts();
+    return service.GetPosts();
 });
 
-app.MapPost("/post", (DataService service, PostDTO data) =>
-{
-    return service.CreatePost(data.title, data.user, data.content, data.upvotes, data.downvotes, data.numberOfVotes, data.postTime);
-});
 
-app.MapPost("/comment", (DataService service, CommentDTO data) =>
-{
-    return service.CreateComment(data.content, data.upvotes, data.downvotes, data.postid, data.user, data.commentTime);
-});
-
-app.MapGet("user", (DataService service) =>
+app.MapGet("/api/user", (DataService service) =>
 {
     return service.GetUsers();
 });
 
-using (var scope = app.Services.CreateScope())
+
+app.MapPost("/api/post/{id}", (DataService service, PostDTO data) =>
 {
-    var dataService = scope.ServiceProvider.GetRequiredService<DataService>();
-    dataService.SeedData();
-}
+    return service.CreatePost(data.title, data.user, data.content, data.upvotes, data.downvotes, data.numberOfVotes, data.postTime);
+});
+
+
+app.MapPost("/api/comment", (DataService service, CommentDTO data) =>
+{
+    return service.CreateComment(data.content, data.upvotes, data.downvotes, data.numberOfVotes, data.postid, data.user, data.commentTime);
+});
+
+app.MapPut("/api/post/{id}/upvote", (DataService service) =>
+{
+    return;
+});
+
+app.MapPut("/api/comment/{id}/upvote", (DataService service) =>
+{
+    return;
+});
 
 // Start webapplikationen
 app.Run();
@@ -69,5 +87,3 @@ app.Run();
 
 record PostDTO(string title, User user, string content, int upvotes, int downvotes, int numberOfVotes, DateTime postTime);
 record CommentDTO(string content, int upvotes, int downvotes, int numberOfVotes, int postid, User user, DateTime commentTime);
-record PostVoteDTO(int postid, User user, bool UpvoteOrDownvote);
-record CommentVoteDTO(int commentId, User user, bool UpvoteOrDownvote);

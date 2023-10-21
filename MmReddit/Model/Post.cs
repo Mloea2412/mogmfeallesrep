@@ -6,7 +6,6 @@ namespace MmReddit.Model
         public int PostId { get; set; }
         public string Title { get; set; }
         public User User { get; set; }
-        public Comment comment { get; set; }
         public string Content { get; set; }
         public int Upvotes { get; set; }
         public int Downvotes { get; set; }
@@ -30,19 +29,14 @@ namespace MmReddit.Model
         public Post()
         {
             PostId = 0;
-            User = null;
             Title = "";
+            User = null;
             Content = "";
             Upvotes = 0;
             Downvotes = 0;
-            NumberOfVotes = 0;
             PostTime = DateTime.Now;
         }
 
-        public override string ToString()
-        {
-            return $"Id: {PostId}, Title: {Title}, Content: {Content}, Upvotes: {Upvotes}, Downvotes: {Downvotes}, User: {User}";
-        }
     }
 }
 
