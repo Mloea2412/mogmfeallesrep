@@ -1,0 +1,28 @@
+{
+    "content": "Jeg hader git",
+    "upvotes": 0,
+    "downvotes": 2,
+    "numberOfVotes": 2,
+    "postid": 1,
+    "user": {
+        "username":"M-L",
+        "userId":4
+        },
+    "commentTime": "2023-10-21T02:06:29.647992"
+}
+
+-------
+
+{
+    "title": "Jeg elsker git!",
+    "user":
+    {
+        "Username": "Ellie",
+        "UserId":1
+        },
+    "content": "Hvad med jer. Elsker i git?",
+    "upvotes": 0,
+    "downvotes": 2,
+    "numberOfVotes": 2,
+    "postTime": "2023-10-21T02:06:29.647992"
+}

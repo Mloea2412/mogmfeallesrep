@@ -73,27 +73,27 @@ app.MapPost("/api/post/{id}/comment", (DataService service, CommentData data) =>
 });
 
 // LAVER EN UPVOTE PÅ ET SPECIFIKT POST
-app.MapPut("/api/post/{id}/upvote", (DataService service, VoteData data) =>
+app.MapPut("/api/post/{id}/upvote", (DataService service, int id) =>
 {
-    return service.PostUpvote(data.id);
+    return service.PostUpvote(id);
 });
 
 // LAVER ET DOWNVOTE PÅ ET SPECIFIKT POST
-app.MapPut("/api/post/{id}/downvote", (DataService service, VoteData data) =>
+app.MapPut("/api/post/{id}/downvote", (DataService service, int id) =>
 {
-    return service.PostDownvote(data.id);
+    return service.PostDownvote(id);
 });
 
 // LAVER EN UPVOTE PÅ EN SPECIKIK COMMENT PÅ ET SPECIFIKT COMMENT
-app.MapPut("/api/comment/{id}/upvote", (DataService service, VoteData data) =>
+app.MapPut("/api/comment/{id}/upvote", (DataService service, int id) =>
 {
-    return service.CommentUpvote(data.id);
+    return service.CommentUpvote(id);
 });
 
 // LAVER EN DOWNVOTE PÅ EN SPECIFIK COMMENT PÅ ET SPECIFIKT POST
-app.MapPut("/api/comment/{id}/downvote", (DataService service, VoteData data) =>
+app.MapPut("/api/comment/{id}/downvote", (DataService service, int id) =>
 {
-    return service.CommentDownvote(data.id);
+    return service.CommentDownvote(id);
 });
 
 

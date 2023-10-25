@@ -61,10 +61,10 @@ namespace MmReddit.Service
             {
                 return "Bruger ikke fundet";
             }
-            // Opret et nyt Post-objekt
+            // Opretter et nyt Post-objekt
             Post nyPost = new Post(title, user1, content, upvotes, downvotes, numberOfVotes, postTime);
 
-            // Tilføj den nye post til databasen
+            // Tilføjer den nye post til databasen
             db.Posts.Add(nyPost);
             db.SaveChanges();
 
