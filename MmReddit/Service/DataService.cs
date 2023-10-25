@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.Extensions.Hosting;
+using System.ComponentModel.Design;
 
 namespace MmReddit.Service
 {
@@ -87,67 +88,39 @@ namespace MmReddit.Service
             db.SaveChanges();
             return "Comment created";
         }
-
-        public bool PostVoting (int postid, bool UpvoteOrDownvote)
+        public string PostUpvote(int id)
         {
-            var post = db.Posts.FirstOrDefault(p => p.PostId == postid);
-            if (post == null)
-            {
-                return false;
-            }
-
-            if (UpvoteOrDownvote == true)
-            {
-                post.Upvotes++;
-                post.NumberOfVotes++;
-                db.SaveChanges();
-
-                return true;
-            }
-            else if (UpvoteOrDownvote == false)
-            {
-                post.Downvotes++;
-                post.NumberOfVotes++;
-                db.SaveChanges();
-                return false;
-            } else
-            {
-                return false;
-            }
+            var post = db.Posts.FirstOrDefault(p => p.PostId == id);
+            post.Upvotes++;
+            post.NumberOfVotes++;
+            db.SaveChanges();
+            return "Post Upvoted";
         }
-
-
-        public bool CommentVoting(int commentid, bool UpvoteOrDownvote)
+        public string PostDownvote(int id)
         {
-            var comment = db.Comments.FirstOrDefault(c => c.CommentId == commentid);
-            {
-                if (comment == null)
-                {
-                    return false;
-                }
-
-                if (UpvoteOrDownvote == true)
-                {
-                    comment.Upvotes++;
-                    comment.NumberOfVotes++;
-                    db.SaveChanges();
-                    return true;
-                }
-
-                else if (UpvoteOrDownvote == false)
-                {
-                    comment.Downvotes++;
-                    comment.NumberOfVotes++;
-                    db.SaveChanges();
-                    return false;
-                }
-                else
-                {
-                    return false;
-                }
-            }
+            var post = db.Posts.FirstOrDefault(p => p.PostId == id);
+            post.Downvotes++;
+            post.NumberOfVotes++;
+            db.SaveChanges();
+            return "Post Downvoted";
         }
-
+        public string CommentUpvote(int id)
+        {
+            var comment = db.Comments.FirstOrDefault(c => c.CommentId == id);
+            comment.Upvotes++;
+            comment.NumberOfVotes++;
+            db.SaveChanges();
+            return "Comment Upvoted";
+        }
+        public string CommentDownvote(int id)
+        {
+            var comment = db.Comments.FirstOrDefault(c => c.CommentId == id);
+            comment.Downvotes++;
+            comment.NumberOfVotes++;
+            db.SaveChanges();
+            return "Comment Downvoted";
+        }
+        
 
         // SEED DATA TIL AT OPRETTE USER, POST OG COMMENT
         public void SeedData()

@@ -1300,25 +1300,25 @@
     ]
   },
   "packageFolders": {
-    "/Users/marie-louise/.nuget/packages/": {}
+    "C:\\Users\\magnu\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/MmReddit/MmReddit.csproj",
+      "projectUniqueName": "C:\\Users\\magnu\\Source\\Repos\\mogmfeallesrep\\MmReddit\\MmReddit.csproj",
       "projectName": "MmReddit",
-      "projectPath": "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/MmReddit/MmReddit.csproj",
-      "packagesPath": "/Users/marie-louise/.nuget/packages/",
-      "outputPath": "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/MmReddit/obj/",
+      "projectPath": "C:\\Users\\magnu\\Source\\Repos\\mogmfeallesrep\\MmReddit\\MmReddit.csproj",
+      "packagesPath": "C:\\Users\\magnu\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\magnu\\Source\\Repos\\mogmfeallesrep\\MmReddit\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/marie-louise/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\magnu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net7.0"
       ],
       "sources": {
-        "/usr/local/share/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -1371,7 +1371,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.400/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.402\\RuntimeIdentifierGraph.json"
       }
     }
   }
