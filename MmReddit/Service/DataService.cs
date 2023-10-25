@@ -30,6 +30,7 @@ namespace MmReddit.Service
             return db.Users.ToList();
         }
 
+        // HENTER ALLE KOMMENTARENE SOM EN LISTE
         public List<Comment> GetComments()
         {
             return db.Comments.ToList();
@@ -68,7 +69,7 @@ namespace MmReddit.Service
 
             return "Post oprettet";
         }
-        // CreateComment
+        // CREATECOMMENT - OPRETTER EN NY KOMMENTAR
         public string CreateComment(string content, int upvotes, int downvotes, int numberOfVotes, int postid, User user, DateTime CommentTime)
         {
             Post post = db.Posts.FirstOrDefault(p => p.PostId == postid);
@@ -87,8 +88,68 @@ namespace MmReddit.Service
             return "Comment created";
         }
 
+        public bool PostVoting (int postid, bool UpvoteOrDownvote)
+        {
+            var post = db.Posts.FirstOrDefault(p => p.PostId == postid);
+            if (post == null)
+            {
+                return false;
+            }
 
-        // SKAL LAVES FÆRDIG SÅ DET VIRKER MED KOMMENTARENE, AT DE HAR ET POSTID
+            if (UpvoteOrDownvote == true)
+            {
+                post.Upvotes++;
+                post.NumberOfVotes++;
+                db.SaveChanges();
+
+                return true;
+            }
+            else if (UpvoteOrDownvote == false)
+            {
+                post.Downvotes++;
+                post.NumberOfVotes++;
+                db.SaveChanges();
+                return false;
+            } else
+            {
+                return false;
+            }
+        }
+
+
+        public bool CommentVoting(int commentid, bool UpvoteOrDownvote)
+        {
+            var comment = db.Comments.FirstOrDefault(c => c.CommentId == commentid);
+            {
+                if (comment == null)
+                {
+                    return false;
+                }
+
+                if (UpvoteOrDownvote == true)
+                {
+                    comment.Upvotes++;
+                    comment.NumberOfVotes++;
+                    db.SaveChanges();
+                    return true;
+                }
+
+                else if (UpvoteOrDownvote == false)
+                {
+                    comment.Downvotes++;
+                    comment.NumberOfVotes++;
+                    db.SaveChanges();
+                    return false;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+
+        // SEED DATA TIL AT OPRETTE USER, POST OG COMMENT
         public void SeedData()
         {
             User user1 = new User { Username = "M-L" };
@@ -132,5 +193,7 @@ namespace MmReddit.Service
             }
             }
     }
+
+
 }
 

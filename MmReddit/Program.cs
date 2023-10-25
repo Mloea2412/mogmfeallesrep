@@ -54,50 +54,73 @@ app.MapGet("/api/posts", (DataService service) =>
 });
 
 
-app.MapGet("/api/users", (DataService service) =>
-{
-    return service.GetUsers();
-});
-
-app.MapGet("/api/comment/{id}", (DataService service, int id) =>
-{
-    return service.GetComment(id);
-});   
-app.MapGet("/api/post/{id}", (DataService service, int id) =>
-{
-    return service.GetPost(id);
-});
-
+// HENTER EN BRUGER PÅ DETS ID 
 app.MapGet("/api/user/{id}", (DataService services, int id) =>
 {
     return services.GetUserId(id);
 });
 
-
-app.MapPost("/api/post/", (DataService service, PostDTO data) =>
+// OPRETTER ET NYT POST
+app.MapPost("/api/post/", (DataService service, PostData data) =>
 {
     return service.CreatePost(data.title, data.user, data.content, data.upvotes, data.downvotes, data.numberOfVotes, data.postTime);
 });
 
-
-app.MapPost("/api/comment", (DataService service, CommentDTO data) =>
+// OPRETTER EN NY KOMMENTAR PÅ ET SPECCIFIKT POST
+app.MapPost("/api/post/{id}/comment", (DataService service, CommentData data) =>
 {
     return service.CreateComment(data.content, data.upvotes, data.downvotes, data.numberOfVotes, data.postid, data.user, data.commentTime);
 });
 
+// LAVER EN UPVOTE PÅ ET SPECIFIKT POST
 app.MapPut("/api/post/{id}/upvote", (DataService service) =>
 {
     return;
 });
 
-app.MapPut("/api/comment/{id}/upvote", (DataService service) =>
+// LAVER ET DOWNVOTE PÅ ET SPECIFIKT POST
+app.MapPut("/api/post/{id}/downvote", (DataService service) =>
 {
     return;
 });
+
+// LAVER EN UPVOTE PÅ EN SPECIKIK COMMENT PÅ ET SPECIFIKT COMMENT
+app.MapPut("/api/post/{id}/comment/{id}/upvote", (DataService service) =>
+{
+    return;
+});
+
+// LAVER EN DOWNVOTE PÅ EN SPECIFIK COMMENT PÅ ET SPECIFIKT POST
+app.MapPut("/api/post/{id}/comment/{id}/downvote", (DataService service) =>
+{
+    return;
+});
+
+
+// EKSTRA
+
+// HENTER ALLE BRUGERNE
+app.MapGet("/api/users", (DataService service) =>
+{
+    return service.GetUsers();
+});
+
+// HENTER KOMMENTAR PÅ DETS ID
+app.MapGet("/api/comment/{id}", (DataService service, int id) =>
+{
+    return service.GetComment(id);
+});
+
+// HENTER ET POST PÅ DETS ID
+app.MapGet("/api/post/{id}", (DataService service, int id) =>
+{
+    return service.GetPost(id);
+});
+
 
 // Start webapplikationen
 app.Run();
 
 
-record PostDTO(string title, User user, string content, int upvotes, int downvotes, int numberOfVotes, DateTime postTime);
-record CommentDTO(string content, int upvotes, int downvotes, int numberOfVotes, int postid, User user, DateTime commentTime);
+record PostData(string title, User user, string content, int upvotes, int downvotes, int numberOfVotes, DateTime postTime);
+record CommentData(string content, int upvotes, int downvotes, int numberOfVotes, int postid, User user, DateTime commentTime);

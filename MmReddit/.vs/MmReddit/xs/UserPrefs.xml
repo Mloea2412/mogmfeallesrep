@@ -1,37 +1,33 @@
 ﻿<Properties StartupConfiguration="{31C4E5EE-E439-4383-82AF-FAF539AC5682}|https">
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.MmReddit PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.MmReddit PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Service/DataService.cs">
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
     <Files>
-      <File FileName="Program.cs" Line="89" Column="127" />
+      <File FileName="Program.cs" Line="1" Column="1" />
       <File FileName="appsettings.json" />
-      <File FileName="Service/DataService.cs" Line="106" Column="54" />
-      <File FileName="Model/Post.cs" Line="1" Column="1" />
-      <File FileName="Model/Comment.cs" Line="21" Column="39" />
-      <File FileName="Model/User.cs" Line="1" Column="1" />
-      <File FileName="Model/MmRedditContext.cs" Line="1" Column="1" />
+      <File FileName="Service/DataService.cs" Line="106" Column="31" />
+      <File FileName="Model/Post.cs" />
+      <File FileName="Model/Comment.cs" />
+      <File FileName="Model/User.cs" />
+      <File FileName="Model/MmRedditContext.cs" />
       <File FileName="Migrations/MmRedditContextModelSnapshot.cs" />
-      <File FileName="Migrations/20231020204457_InitialCreate.Designer.cs" />
-      <File FileName="Migrations/20231020204457_InitialCreate.cs" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="MmReddit">
             <Node name="MmReddit">
-              <Node name="Model" expanded="True" />
-              <Node name="Service" expanded="True">
-                <Node name="DataService.cs" selected="True" />
-              </Node>
+              <Node name="Service" expanded="True" />
+              <Node name="Program.cs" selected="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>
