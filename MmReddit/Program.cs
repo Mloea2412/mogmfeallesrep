@@ -73,27 +73,27 @@ app.MapPost("/api/post/{id}/comment", (DataService service, CommentData data) =>
 });
 
 // LAVER EN UPVOTE PÅ ET SPECIFIKT POST
-app.MapPut("/api/post/{id}/upvote", (DataService service, UpvoteData data) =>
+app.MapPut("/api/post/{id}/upvote", (DataService service, VoteData data) =>
 {
-    return service.;
+    return service.PostUpvote(data.id);
 });
 
 // LAVER ET DOWNVOTE PÅ ET SPECIFIKT POST
-app.MapPut("/api/post/{id}/downvote", (DataService service, DownvoteData data) =>
+app.MapPut("/api/post/{id}/downvote", (DataService service, VoteData data) =>
 {
-    return;
+    return service.PostDownvote(data.id);
 });
 
 // LAVER EN UPVOTE PÅ EN SPECIKIK COMMENT PÅ ET SPECIFIKT COMMENT
-app.MapPut("/api/comment/{id}/upvote", (DataService service, UpvoteData data) =>
+app.MapPut("/api/comment/{id}/upvote", (DataService service, VoteData data) =>
 {
-    return;
+    return service.CommentUpvote(data.id);
 });
 
 // LAVER EN DOWNVOTE PÅ EN SPECIFIK COMMENT PÅ ET SPECIFIKT POST
-app.MapPut("/api/comment/{id}/downvote", (DataService service, DownvoteData data) =>
+app.MapPut("/api/comment/{id}/downvote", (DataService service, VoteData data) =>
 {
-    return;
+    return service.CommentDownvote(data.id);
 });
 
 
@@ -125,6 +125,4 @@ app.Run();
 record PostData(string title, User user, string content, int upvotes, int downvotes, int numberOfVotes, DateTime postTime);
 record CommentData(string content, int upvotes, int downvotes, int numberOfVotes, int postid, User user, DateTime commentTime);
 
-record UpvoteData(int id, int upvotes);
-
-record DownvoteData(int id, int downvotes);
+record VoteData(int id);
