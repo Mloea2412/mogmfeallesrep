@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Components.Forms;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Sætter CORS så API'en kan bruges fra andre domæner
+// Opretter en instans af WebApplication og konfigurerer den.
+
+// Sætter CORS, så API'en kan bruges fra andre domæner
 var AllowSomeStuff = "_AllowSomeStuff";
 builder.Services.AddCors(options =>
 {
@@ -19,18 +21,21 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Tilføj DbContext factory som service.
+// Tilføj DbContext-fabrik som service.
 builder.Services.AddDbContext<MmRedditContext>(options =>
   options.UseSqlite(builder.Configuration.GetConnectionString("ContextSQLite")));
 
-// Tilføj DataService så den kan bruges i endpoints
+// Tilføj DataService som en tjeneste, så den kan bruges i endpoints
 builder.Services.AddScoped<DataService>();
 
 var app = builder.Build();
 
+// Konfigurerer applikationen
+
 app.UseHttpsRedirection();
 app.UseCors(AllowSomeStuff);
 
+// Opretter scope for at udføre datainitialisering
 using (var scope = app.Services.CreateScope())
 {
     var dataService = scope.ServiceProvider.GetRequiredService<DataService>();
@@ -39,7 +44,7 @@ using (var scope = app.Services.CreateScope())
 
 using (var db = new MmRedditContext())
 {
-
+    // Initialiserer en databasekontekst
 }
 
 app.Use(async (context, next) =>
@@ -48,81 +53,79 @@ app.Use(async (context, next) =>
     await next(context);
 });
 
+// Definerer endpoint-ruter
+
 app.MapGet("/api/posts", (DataService service) =>
 {
     return service.GetPosts();
 });
 
-
-// HENTER EN BRUGER PÅ DETS ID 
+// Henter en bruger på dets id 
 app.MapGet("/api/user/{id}", (DataService services, int id) =>
 {
     return services.GetUserId(id);
 });
 
-// OPRETTER ET NYT POST
+// Opretter en ny post
 app.MapPost("/api/post/", (DataService service, PostData data) =>
 {
     return service.CreatePost(data.title, data.user, data.content, data.upvotes, data.downvotes, data.numberOfVotes, data.postTime);
 });
 
-// OPRETTER EN NY KOMMENTAR PÅ ET SPECCIFIKT POST
+// Opretter en ny kommentar på et spcifikt post
 app.MapPost("/api/post/{id}/comment", (DataService service, CommentData data) =>
 {
     return service.CreateComment(data.content, data.upvotes, data.downvotes, data.numberOfVotes, data.postid, data.user, data.commentTime);
 });
 
-// LAVER EN UPVOTE PÅ ET SPECIFIKT POST
+// Laver en upvote på et specifikt post
 app.MapPut("/api/post/{id}/upvote", (DataService service, int id) =>
 {
     return service.PostUpvote(id);
 });
 
-// LAVER ET DOWNVOTE PÅ ET SPECIFIKT POST
+// Laver et downvote på et specifikt post
 app.MapPut("/api/post/{id}/downvote", (DataService service, int id) =>
 {
     return service.PostDownvote(id);
 });
 
-// LAVER EN UPVOTE PÅ EN SPECIKIK COMMENT PÅ ET SPECIFIKT COMMENT
+// Laver en upvote på et specifik comment på et specifikt comment
 app.MapPut("/api/comment/{id}/upvote", (DataService service, int id) =>
 {
     return service.CommentUpvote(id);
 });
 
-// LAVER EN DOWNVOTE PÅ EN SPECIFIK COMMENT PÅ ET SPECIFIKT POST
+// Laver en downvote på en specifik comment på et specifikt post
 app.MapPut("/api/comment/{id}/downvote", (DataService service, int id) =>
 {
     return service.CommentDownvote(id);
 });
 
 
-// EKSTRA
-
-// HENTER ALLE BRUGERNE
+// Henter alle brugerne 
 app.MapGet("/api/users", (DataService service) =>
 {
     return service.GetUsers();
 });
 
-// HENTER KOMMENTAR PÅ DETS ID
+// Henter en specifik kommentar på dets id
 app.MapGet("/api/comment/{id}", (DataService service, int id) =>
 {
     return service.GetComment(id);
 });
 
-// HENTER ET POST PÅ DETS ID
+// Henter et post på dets id
 app.MapGet("/api/post/{id}", (DataService service, int id) =>
 {
     return service.GetPost(id);
 });
 
-
-// Start webapplikationen
+// Starter webapplikationen
 app.Run();
 
+// Definition af record-typer
 
 record PostData(string title, User user, string content, int upvotes, int downvotes, int numberOfVotes, DateTime postTime);
 record CommentData(string content, int upvotes, int downvotes, int numberOfVotes, int postid, User user, DateTime commentTime);
-
 record VoteData(int id);
