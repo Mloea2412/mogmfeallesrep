@@ -55,16 +55,16 @@ namespace MmReddit.Service
 
         public string CreatePost(string title, User user, string content, int upvotes, int downvotes, int numberOfVotes, DateTime postTime)
         {
-            // Kontrollér, om brugeren findes i databasen
+            // LAVER KONTROL PÅ OM BRUGEREN FINDES I DATABASEN.
             User user1 = db.Users.FirstOrDefault(u => u.UserId == user.UserId)!;
             if (user1 == null)
             {
                 return "Bruger ikke fundet";
             }
-            // Opretter et nyt Post-objekt
+            // NYT POST
             Post nyPost = new Post(title, user1, content, upvotes, downvotes, numberOfVotes, postTime);
 
-            // Tilføjer den nye post til databasen
+            // TILFØJER DET NYE POST TIL DATABASEN
             db.Posts.Add(nyPost);
             db.SaveChanges();
 
@@ -73,21 +73,24 @@ namespace MmReddit.Service
         // CREATECOMMENT - OPRETTER EN NY KOMMENTAR
         public string CreateComment(string content, int upvotes, int downvotes, int numberOfVotes, int postid, User user, DateTime CommentTime)
         {
+            // LAVER KONTROL PÅ OM POSTET FINDES I DATABASEN.
             Post post = db.Posts.FirstOrDefault(p => p.PostId == postid);
             if (post == null)
             {
                 return "Post not found";
             }
-
+            // TJEKKER OM DB ER NULL
             if (db == null)
             {
                 return "Database not initialized";
             }
-
+            // LAVER EN NY COMMENT PÅ DET POST VARIABEL VI HAR FUNDET & TILFØJER DEN VIA POST-ID..
             post.Comments.Add(new Comment(content, downvotes, upvotes, numberOfVotes, user, CommentTime));
             db.SaveChanges();
             return "Comment created";
         }
+        // PUT VOTES
+        // SÆTTER UPVOTES / DOWNVOTES OP OG DET TOTALE ANTAL VOTES OP.
         public string PostUpvote(int id)
         {
             var post = db.Posts.FirstOrDefault(p => p.PostId == id);
@@ -125,48 +128,56 @@ namespace MmReddit.Service
         // SEED DATA TIL AT OPRETTE USER, POST OG COMMENT
         public void SeedData()
         {
+            //TILFØJER 2 USERS
             User user1 = new User { Username = "M-L" };
+            User user2 = new User("Magnus");
+            //TILFØJER USEREN "M-L" HVIS USEREN IKKE FINDES I DATABASEN
             if (db.Users.FirstOrDefault(u => u.Username == user1.Username) == null)
             {
                 db.Add(user1);
                 db.SaveChanges();
             }
-
+            //Jeg vil også være med!! - Magnus :)
+            if (db.Users.FirstOrDefault(u => u.Username == user2.Username) == null)
+            {
+                    db.Add(user2);
+                    db.SaveChanges();
+            }
+            //LAVET ET POST
             Post post = new Post
             {
                 Title = "Sikke dejligt vejr",
-                User = user1,
+                User = user1, // M-L
                 Content = "Hvad tænker I?",
                 Downvotes = 0,
                 Upvotes = 10,
-                NumberOfVotes = 10
+                NumberOfVotes = 10,
+                PostTime = DateTime.Now
             };
-
+            //TILFØJER POSTET MED TITLEN "Sikke dejligt vejr" HVIS DEN IKKE FINDES I DATABASEN
             if (db.Posts.FirstOrDefault(p => p.Title == post.Title) == null)
             {
                 db.Add(post);
                 db.SaveChanges();
             }
-
+            //LAVER EN COMMENT
             Comment comment = new Comment
             {
                 Content = "Vi blæser væk",
                 Downvotes = 4,
                 Upvotes = 5,
                 NumberOfVotes = 9,
-                User = user1, // Brug den samme bruger som ejer indlægget
-                CommentTime = DateTime.Now // Tilføj tidspunkt
+                User = user2,
+                CommentTime = DateTime.Now 
             };
-
-            // SKAL KOBLES PÅ, AT KOMMENTAREN TILHØRE OPSLAGET. DER SKAL ET POSTID PÅ
+            //TILFØJER COMMENTEN MED CONTENT "Vi blæser væK" HVIS DEN IKKE FINDES I DATABASEN
             if (db.Comments.FirstOrDefault(c => c.Content == comment.Content) == null)
             {
-                db.Add(comment);
+                //TILFØJER COMMENT IGENNEM DB.POSTS
+                post.Comments.Add(comment);
                 db.SaveChanges();
             }
-            }
+        }
     }
-
-
 }
 
