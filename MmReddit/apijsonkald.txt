@@ -1,15 +1,16 @@
 {
-    "content": "Jeg hader git",
-    "upvotes": 0,
-    "downvotes": 2,
-    "numberOfVotes": 2,
-    "postid": 1,
+    "content": "Prøv at tjek den her api: https://ghibliapi.vercel.app/#",
+    "upvotes": 5,
+    "downvotes": 1,
+    "numberOfVotes": 6,
     "user": {
-        "username":"M-L",
+        "username":"",
         "userId":4
         },
-    "commentTime": "2023-10-21T02:06:29.647992"
+    "commentTime": "2023-10-22T17:06:29.647992"
 }
+
+//skriv post1
 
 -------
 

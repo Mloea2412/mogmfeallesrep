@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "KWoNGY+8cXUXq/55wEGL8tGlxxERWGw7UC8WUxGyrSZrX3LMUeTPnQjozE8N79DtE4b/RW6zErk57DNGHthiwQ==",
+  "dgSpecHash": "9x9cCHc8WLuTiTDJBpgHLaTK6iP6G2tVsoxznA97C34rIpCkD2LMZvjrwoNrQtudeeSTBTB/k94Co63LTQD19w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Magnus Heesch\\Source\\Repos\\mogmfeallesrep\\MmReddit\\MmReddit.csproj",
+  "projectFilePath": "C:\\Users\\Magnus Heesch\\source\\repos\\mogmfeallesrep\\MmReddit\\MmReddit.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Magnus Heesch\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Magnus Heesch\\.nuget\\packages\\microsoft.aspnetcore.diagnostics.entityframeworkcore\\7.0.12\\microsoft.aspnetcore.diagnostics.entityframeworkcore.7.0.12.nupkg.sha512",

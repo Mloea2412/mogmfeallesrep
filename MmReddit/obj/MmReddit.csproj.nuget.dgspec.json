@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Magnus Heesch\\Source\\Repos\\mogmfeallesrep\\MmReddit\\MmReddit.csproj": {}
+    "C:\\Users\\Magnus Heesch\\source\\repos\\mogmfeallesrep\\MmReddit\\MmReddit.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Magnus Heesch\\Source\\Repos\\mogmfeallesrep\\MmReddit\\MmReddit.csproj": {
+    "C:\\Users\\Magnus Heesch\\source\\repos\\mogmfeallesrep\\MmReddit\\MmReddit.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Magnus Heesch\\Source\\Repos\\mogmfeallesrep\\MmReddit\\MmReddit.csproj",
+        "projectUniqueName": "C:\\Users\\Magnus Heesch\\source\\repos\\mogmfeallesrep\\MmReddit\\MmReddit.csproj",
         "projectName": "MmReddit",
-        "projectPath": "C:\\Users\\Magnus Heesch\\Source\\Repos\\mogmfeallesrep\\MmReddit\\MmReddit.csproj",
+        "projectPath": "C:\\Users\\Magnus Heesch\\source\\repos\\mogmfeallesrep\\MmReddit\\MmReddit.csproj",
         "packagesPath": "C:\\Users\\Magnus Heesch\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Magnus Heesch\\Source\\Repos\\mogmfeallesrep\\MmReddit\\obj\\",
+        "outputPath": "C:\\Users\\Magnus Heesch\\source\\repos\\mogmfeallesrep\\MmReddit\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Magnus Heesch\\AppData\\Roaming\\NuGet\\NuGet.Config",

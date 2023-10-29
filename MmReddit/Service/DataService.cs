@@ -22,7 +22,7 @@ namespace MmReddit.Service
         // HENTER ALLE KOMMENTARENE UD SOM EN LISTE MED TILHØRENDE OPLYSNINGER OG KOMMENTARER
         public List<Post> GetPosts()
         {
-            return db.Posts.Include(p => p.Comments).ThenInclude(u => u.User).Include(p => p.User).ToList();
+            return db.Posts.Include(p => p.Comments).ThenInclude(u => u.User).Include(p => p.User).OrderByDescending(c => c.PostTime).ToList();
         }
 
         // HENTER ALLE BRUGERNE

@@ -73,9 +73,9 @@ app.MapPost("/api/post/", (DataService service, PostData data) =>
 });
 
 // Opretter en ny kommentar på et spcifikt post
-app.MapPost("/api/post/{id}/comment", (DataService service, CommentData data) =>
+app.MapPost("/api/post/{id}/comment", (DataService service, CommentData data, int id) =>
 {
-    return service.CreateComment(data.content, data.upvotes, data.downvotes, data.numberOfVotes, data.postid, data.user, data.commentTime);
+    return service.CreateComment(data.content, data.upvotes, data.downvotes, data.numberOfVotes, id, data.user, data.commentTime);
 });
 
 // Laver en upvote på et specifikt post
