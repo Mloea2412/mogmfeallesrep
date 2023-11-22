@@ -1,27 +1,26 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Magnus Heesch\\source\\repos\\mogmfeallesrep\\MmReddit\\MmReddit.csproj": {}
+    "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/MmReddit/MmReddit.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Magnus Heesch\\source\\repos\\mogmfeallesrep\\MmReddit\\MmReddit.csproj": {
+    "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/MmReddit/MmReddit.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Magnus Heesch\\source\\repos\\mogmfeallesrep\\MmReddit\\MmReddit.csproj",
+        "projectUniqueName": "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/MmReddit/MmReddit.csproj",
         "projectName": "MmReddit",
-        "projectPath": "C:\\Users\\Magnus Heesch\\source\\repos\\mogmfeallesrep\\MmReddit\\MmReddit.csproj",
-        "packagesPath": "C:\\Users\\Magnus Heesch\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Magnus Heesch\\source\\repos\\mogmfeallesrep\\MmReddit\\obj\\",
+        "projectPath": "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/MmReddit/MmReddit.csproj",
+        "packagesPath": "/Users/marie-louise/.nuget/packages/",
+        "outputPath": "/Users/marie-louise/Desktop/3.semester efterår/Software arkitektur/Projekt - API - Reddit/mogmfeallesrep/MmReddit/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Magnus Heesch\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/marie-louise/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "/usr/local/share/dotnet/library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -74,7 +73,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/7.0.400/RuntimeIdentifierGraph.json"
         }
       }
     }

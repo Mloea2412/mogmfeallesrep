@@ -1,32 +1,34 @@
 ﻿<Properties StartupConfiguration="{31C4E5EE-E439-4383-82AF-FAF539AC5682}|https">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Service/DataService.cs">
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.MmReddit PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Program.cs">
     <Files>
-      <File FileName="Program.cs" Line="127" Column="1" />
+      <File FileName="Program.cs" Line="118" Column="1" />
       <File FileName="appsettings.json" />
-      <File FileName="Service/DataService.cs" Line="124" Column="1" />
-      <File FileName="Model/Post.cs" />
-      <File FileName="Model/Comment.cs" />
-      <File FileName="Model/User.cs" />
-      <File FileName="Model/MmRedditContext.cs" />
+      <File FileName="Service/DataService.cs" Line="1" Column="1" />
+      <File FileName="Model/Post.cs" Line="43" Column="1" />
+      <File FileName="Model/Comment.cs" Line="39" Column="1" />
+      <File FileName="Model/User.cs" Line="26" Column="1" />
+      <File FileName="Model/MmRedditContext.cs" Line="19" Column="28" />
       <File FileName="Migrations/MmRedditContextModelSnapshot.cs" />
+      <File FileName="apijsonkald.txt" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="MmReddit">
-            <Node name="MmReddit" expanded="True" selected="True">
+            <Node name="MmReddit">
               <Node name="Service" expanded="True" />
+              <Node name="Program.cs" selected="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.MmReddit PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>
