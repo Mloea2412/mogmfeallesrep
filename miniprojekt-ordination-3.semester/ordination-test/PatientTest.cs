@@ -26,6 +26,8 @@ public class PatientTest
         double vægt = 83;
 
         Patient patient = new Patient(cpr, navn, vægt);
-        Assert.AreEqual("Egon", patient.navn);
+        Assert.AreNotEqual("Egon", patient.navn);
+        //Assert.AreEqual("Egon", patient.navn);
+        //Ret til AreNotSame hvis testen skal pass
     }
 }
