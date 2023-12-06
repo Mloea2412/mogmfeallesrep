@@ -164,7 +164,7 @@ public class DataService
         }
         else
         {
-            throw new ArgumentException("SlutDato må ikke være før StartDato.", nameof(slutDato));
+            throw new ArgumentNullException("SlutDato må ikke være før StartDato.", nameof(slutDato));
         }
 
     }
@@ -211,7 +211,7 @@ public class DataService
         }
         else
         {
-            throw new ArgumentException("SlutDato må ikke være før StartDato.", nameof(slutDato));
+            throw new ArgumentNullException("SlutDato må ikke være før StartDato.", nameof(slutDato));
         }
         }
 
@@ -276,10 +276,17 @@ public class DataService
     /// <returns></returns>
 	public double GetAnbefaletDosisPerDøgn(int patientId, int laegemiddelId) 
     {
-        Patient patient = db.Patienter.Find(patientId)!;
+        Patient patient = db.Patienter.FirstOrDefault(p => p.PatientId == patientId);
+        if (patient == null)
+        {
+            throw new ArgumentNullException("Patienten med det angivne ID eksisterer ikke.", nameof(patientId));
+        }
 
-        Laegemiddel laegemiddel = db.Laegemiddler.Find(laegemiddelId)!;
-
+        Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(l => l.LaegemiddelId == laegemiddelId);
+        if (laegemiddel == null)
+        {
+            throw new ArgumentNullException("Lægemidlet med det angivne ID eksisterer ikke.", nameof(laegemiddelId));
+        }
         double AnDosis = -1;
         if (patient != null && laegemiddel != null && patient.vaegt > 0)
         {
@@ -287,7 +294,7 @@ public class DataService
         }
         else if (patient.vaegt <= 0)
         {
-            throw new InvalidOperationException("Vægt skal gives som en positiv værdi");
+            throw new ArgumentOutOfRangeException("Vægt skal gives som en positiv værdi");
         }
 
         return AnDosis;
