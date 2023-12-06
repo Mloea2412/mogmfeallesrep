@@ -25,20 +25,6 @@ public class DagligSkæv : Ordination {
 
 		return base.antalDage() / samletDosis();
 
-
-		/*
-		 Et andet forslag
-
-		public override double doegdosis() {
-		double doegnDosis = 0;
-		foreach(Dosis d in doser)
-		{
-			doegnDosis += d.antal;
-		}
-		return doegnDosis
-		 
-		 
-		 */
 	}
 
 	public override String getType() {

@@ -53,15 +53,6 @@ public class PN : Ordination {
 
         return sum;
 
-        /*
-         
-         Kan den gøre simplere ved at sige
-        public override double doegnDosis()
-        {
-            return antalEnheder;
-        }
-         
-         */
     }
 
 
