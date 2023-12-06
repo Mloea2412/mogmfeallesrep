@@ -132,9 +132,9 @@ public class DataService
 
     public PN OpretPN(int patientId, int laegemiddelId, double antal, DateTime startDato, DateTime slutDato)
     {
-        if (slutDato > startDato)
+        if (slutDato >= startDato)
         {
-            if (antal >= 0)
+            if (antal > 0)
             {
                 Patient patient = db.Patienter.FirstOrDefault(p => p.PatientId == patientId);
                 Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(l => l.LaegemiddelId == laegemiddelId);
@@ -148,19 +148,19 @@ public class DataService
             }
             else
             {
-                throw new Exception("Antal skal være positivt");
+                throw new InvalidOperationException("Antal skal være positivt");
             }
         }
         else
         {
-            throw new Exception("SlutDato må ikke være før StartDato");
+            throw new InvalidOperationException("SlutDato må ikke være før StartDato");
         }
     }
 
     public DagligFast OpretDagligFast(int patientId, int laegemiddelId, 
         double antalMorgen, double antalMiddag, double antalAften, double antalNat, 
         DateTime startDato, DateTime slutDato) {
-        if (slutDato > startDato)
+        if (slutDato >= startDato)
         {
             if (antalMorgen >= 0 && antalMiddag >= 0 && antalAften >= 0 && antalNat >= 0)
             {
@@ -173,8 +173,8 @@ public class DataService
 
                 db.SaveChanges();
 
-                int oID = dagligFast.OrdinationId;
-                Ordination ordination = db.Ordinationer.Find(oID)!;
+                int temp = dagligFast.OrdinationId;
+                Ordination ordination = db.Ordinationer.Find(temp)!;
                 patient.ordinationer.Add(ordination);
                 db.SaveChanges();
 
@@ -182,17 +182,17 @@ public class DataService
             }
             else
             {
-                throw new Exception("Alle instanser af antal skal have en positiv værdi");
+                throw new Exception("Alle værdier skal være positive");
             }
         }
         else
         {
-            throw new Exception("SlutDato må ikke være før StartDato");
+            throw new Exception("slutDato må ikke være før startDato");
         }
      }
 
     public DagligSkæv OpretDagligSkaev(int patientId, int laegemiddelId, Dosis[] doser, DateTime startDato, DateTime slutDato) {
-        if (slutDato > startDato)
+        if (slutDato >= startDato && startDato >= DateTime.Now)
         {
             foreach (Dosis dosis in doser)
             {
@@ -222,15 +222,15 @@ public class DataService
     {
 
         PN pn = db.PNs.Find(id)!;
-        bool DosisDag = pn.givDosis(dato);
-        if (DosisDag)
+        bool anvendtOrdination = pn.givDosis(dato);
+        if (anvendtOrdination)
         {
             db.SaveChanges();
-            return ($"Dosis givet d. {dato}");
+            return ($"Dosis er anvendt d. {dato}");
         }
         else
         {
-            throw new Exception("Dosis ikke givet");
+            return ("Ordination ikke anvendt");
         }
     }
 

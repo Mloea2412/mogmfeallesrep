@@ -50,7 +50,18 @@ public class PN : Ordination {
             int dage = (int)(max - min).TotalDays + 1;
             sum = samletDosis() / dage;
         }
+
         return sum;
+
+        /*
+         
+         Kan den gøre simplere ved at sige
+        public override double doegnDosis()
+        {
+            return antalEnheder;
+        }
+         
+         */
     }
 
 

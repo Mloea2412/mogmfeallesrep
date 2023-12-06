@@ -32,6 +32,16 @@ public abstract class Ordination {
         return antal;
     }
 
+    /*
+     Kan den gøres simplere ved at sige
+    public int antalDage()
+    {
+        return slutDen.DAy - startDen.Day;
+    }
+     
+     
+     */
+
     public override String ToString() {
         return startDen.ToString();
     }
