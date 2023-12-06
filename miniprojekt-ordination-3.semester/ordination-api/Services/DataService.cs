@@ -254,7 +254,7 @@ public class DataService
     public string AnvendOrdination(int id,Dato dato)
     {
         
-        PN pn = db.PNs.Find(id)!;
+        PN pn = db.PNs.Find(id);
         bool anvendtOrdination = pn.givDosis(dato);
         
         if (anvendtOrdination)
