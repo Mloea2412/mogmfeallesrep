@@ -260,7 +260,7 @@ public class DataService
         if (anvendtOrdination)
         {
             db.SaveChanges();
-            return ($"Dosis er anvendt d. {dato}");
+            return ($"Dosis er anvendt.");
         }
         else
         {
