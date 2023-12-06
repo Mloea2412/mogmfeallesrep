@@ -7,7 +7,7 @@ using Data;
 using shared.Model;
 using shared;
 using static shared.Util;
-
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 [TestClass]
 public class ServiceTest
@@ -67,8 +67,7 @@ public class ServiceTest
         // - Antal dage doseringen skal vare (0, da det er en fast dosering)
         // - Startdato (dagens dato)
         // - Slutdato (dagens dato + 3 dage)
-        service.OpretDagligFast(patient.PatientId, lm.LaegemiddelId, 2, 2, 1, 0, DateTime.Now, DateTime.Now.AddDays(3));
-
+        service.OpretDagligFast(patient.PatientId, lm.LaegemiddelId, 2, 2, 1, 0, DateTime.Now, DateTime.Now.AddDays(2)); 
         // Tjekker, om der nu er to daglige faste objekter i tjenesten. Forventningen er, at antallet er steget fra 1 til 2.
         Assert.AreEqual(2, service.GetDagligFaste().Count());
     }
@@ -112,12 +111,29 @@ public class ServiceTest
         Assert.AreEqual(4, service.GetPNs().Count());
 
         // Opretter en PN med patientens ID, lægemidlets ID, en mængde på 3 og en doseringsperiode fra i dag til to dage frem.
-        service.OpretPN(patient.PatientId, lm.LaegemiddelId, 3, DateTime.Now, DateTime.Now.AddDays(2));
-
+        service.OpretPN(patient.PatientId, lm.LaegemiddelId, 3, DateTime.Now, DateTime.Now.AddDays(2));  
+        
         // Tjekker, om der stadig er to PN-objekter i tjenesten. Forventningen er, at antallet forbliver uændret, da testen ikke forventer at tilføje et nyt objekt.
         Assert.AreEqual(5, service.GetPNs().Count());
     }
 
+
+
+    /* Her har du lidt noter fra hvad jeg testet som ikke virker ://
+       [TestMethod]
+    public void PN_TEST_VIRKERIKKE()
+    {
+
+        // Henter den første patient fra tjenesten.
+        Patient patient = service.GetPatienter().First();
+
+        // Henter den første lægemiddel fra tjenesten.
+        Laegemiddel lm = service.GetLaegemidler().First();
+        service.OpretPN(patient.PatientId, lm.LaegemiddelId, 3, startDato: new DateTime(2023, 12, 7), slutDato: new DateTime(2023, 12, 23));
+        DateTime testdag = new DateTime(2023, 12, 30);
+        service.AnvendOrdination(id: 1, new Dato { dato = testdag });        
+    }
+    */
 
     // TEST AF PN
 

@@ -129,11 +129,11 @@ public class DataService
     public List<Laegemiddel> GetLaegemidler() {
         return db.Laegemiddler.ToList();
     }
-
+    
 
     public PN OpretPN(int patientId, int laegemiddelId, double antal, DateTime startDato, DateTime slutDato)
     {
-        if (slutDato >= startDato && startDato <= DateTime.Now)
+        if (slutDato >= startDato && startDato >= DateTime.Today)
         {
             if (antal >= 0)
             {
@@ -164,7 +164,7 @@ public class DataService
         }
         else
         {
-            throw new ArgumentNullException("SlutDato må ikke være før StartDato.", nameof(slutDato));
+            throw new ArgumentNullException("SlutDato må ikke være før StartDato & StartDato må ikke være i fortiden", nameof(slutDato));
         }
 
     }
@@ -177,7 +177,7 @@ public class DataService
     public DagligFast OpretDagligFast(int patientId, int laegemiddelId,
         double antalMorgen, double antalMiddag, double antalAften, double antalNat,
         DateTime startDato, DateTime slutDato) {
-        if (slutDato >= startDato && startDato <= DateTime.Now)
+        if (slutDato >= startDato && startDato >= DateTime.Today)
         {
             if (antalMorgen >= 0 && antalMiddag >= 0 && antalAften >= 0 && antalNat >= 0)
             {
@@ -211,12 +211,12 @@ public class DataService
         }
         else
         {
-            throw new ArgumentNullException("SlutDato må ikke være før StartDato.", nameof(slutDato));
+            throw new ArgumentNullException("SlutDato må ikke være før StartDato & StartDato må ikke være i fortiden", nameof(slutDato));
         }
         }
 
         public DagligSkæv OpretDagligSkaev(int patientId, int laegemiddelId, Dosis[] doser, DateTime startDato, DateTime slutDato) {
-            if (slutDato >= startDato && startDato < DateTime.Now)
+            if (slutDato >= startDato && startDato >= DateTime.Today)
             {
                 foreach (Dosis dosis in doser)
                 {
@@ -247,15 +247,16 @@ public class DataService
             }
             else
             {
-                throw new ArgumentNullException("SlutDato må ikke være før StartDato.", nameof(slutDato));
+                throw new ArgumentNullException("SlutDato må ikke være før StartDato & StartDato må ikke være i fortiden", nameof(slutDato));
             }
         }
 
-    public string AnvendOrdination(int id, Dato dato)
+    public string AnvendOrdination(int id,Dato dato)
     {
-
+        
         PN pn = db.PNs.Find(id)!;
         bool anvendtOrdination = pn.givDosis(dato);
+        
         if (anvendtOrdination)
         {
             db.SaveChanges();
