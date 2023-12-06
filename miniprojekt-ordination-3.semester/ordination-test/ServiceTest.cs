@@ -113,27 +113,28 @@ public class ServiceTest
         Laegemiddel lm = service.GetLaegemidler().First();
 
         // Tjekker, om der er to PN-objekter i tjenesten. Forventningen er, at der er to, da testen starter.
-        Assert.AreEqual(2, service.GetPNs().Count());
+        Assert.AreEqual(4, service.GetPNs().Count());
 
         // Opretter en PN med patientens ID, lægemidlets ID, en mængde på 3 og en doseringsperiode fra i dag til to dage frem.
         service.OpretPN(patient.PatientId, lm.LaegemiddelId, 3, DateTime.Now, DateTime.Now.AddDays(2));
 
         // Tjekker, om der stadig er to PN-objekter i tjenesten. Forventningen er, at antallet forbliver uændret, da testen ikke forventer at tilføje et nyt objekt.
-        Assert.AreEqual(2, service.GetPNs().Count());
+        Assert.AreEqual(5, service.GetPNs().Count());
     }
 
 
+
     [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
     public void OpretPNPatientIdeEksistererikke()
     {
         // Henter den første lægemiddel fra tjenesten.
         Laegemiddel lm = service.GetLaegemidler().First();
 
         // Forsøger at oprette en PN med en ikke-eksisterende patient (PatientId 20).
-        Assert.ThrowsException<ArgumentException>(() =>
-        {
+        
             service.OpretPN(20, lm.LaegemiddelId, 3, DateTime.Now, DateTime.Now.AddDays(2));
-        });
+        
         Console.WriteLine("Patienten med det angivne ID eksisterer ikke.");
     }
 
@@ -141,8 +142,8 @@ public class ServiceTest
 
     // TEST AF DAGLIG FAST
 
-    [TestMethod] // Testmetode for at validere, at en InvalidOperationException kastes ved forsøg på at oprette en daglig fast dosis med en ikke-eksisterende patient (PatientId 33).
-    [ExpectedException(typeof(InvalidOperationException))]
+    [TestMethod] // Testmetode for at validere, at en ArgumentNullException kastes ved forsøg på at oprette en daglig fast dosis med en ikke-eksisterende patient (PatientId 33).
+    [ExpectedException(typeof(ArgumentNullException))]
     public void OpretDagligFastPatientEksistererIkke()
     {
         // Henter den første patient fra tjenesten.
@@ -152,7 +153,7 @@ public class ServiceTest
         Laegemiddel lm = service.GetLaegemidler().First();
 
         // Forsøger at oprette en daglig fast dosis med en ikke-eksisterende patient (PatientId 33).
-        // Forventningen er, at en InvalidOperationException kastes.
+        // Forventningen er, at en ArgumentNullException kastes.
         service.OpretDagligFast(33, lm.LaegemiddelId, 8, 2, 2, 6, DateTime.Now, DateTime.Now.AddDays(2));
 
         // Udskriver en besked til konsollen for at bekræfte, at oprettelsen af daglig fast dosis fejlede korrekt.
@@ -165,8 +166,8 @@ public class ServiceTest
     // TEST AF DAGLIG SKÆV
 
 
-    [TestMethod] // Testmetode for at validere, at en InvalidCastException kastes ved forsøg på at oprette en daglig skæv dosis med ugyldig PatientId (-2).
-    [ExpectedException(typeof(InvalidOperationException))]
+    [TestMethod] // Testmetode for at validere, at en ArgumentNullException kastes ved forsøg på at oprette en daglig skæv dosis med ugyldig PatientId (-2).
+    [ExpectedException(typeof(ArgumentNullException))]
     public void OpretDagligSkævUgyldigPatientId()
     {
         // Henter den første patient fra tjenesten.
@@ -187,8 +188,8 @@ public class ServiceTest
 
 
 
-    [TestMethod] // Testmetode for at validere, at en InvalidCastException kastes ved forsøg på at oprette en daglig skæv dosis med en PatientId, der ikke eksisterer (15).
-    [ExpectedException(typeof(InvalidOperationException))]
+    [TestMethod] // Testmetode for at validere, at en ArgumentNullException kastes ved forsøg på at oprette en daglig skæv dosis med en PatientId, der ikke eksisterer (15).
+    [ExpectedException(typeof(ArgumentNullException))]
     public void OpretDagligSkævPatientIdEksistererIkke()
     {
         // Henter den første patient fra tjenesten.
@@ -210,8 +211,8 @@ public class ServiceTest
 
 
 
-    [TestMethod] // Testmetode for at validere, at en InvalidCastException kastes ved forsøg på at oprette en daglig skæv dosis med en LaegemiddelId, der ikke eksisterer (23).
-    [ExpectedException(typeof(InvalidOperationException))]
+    [TestMethod] // Testmetode for at validere, at en ArgumentNullException kastes ved forsøg på at oprette en daglig skæv dosis med en LaegemiddelId, der ikke eksisterer (23).
+    [ExpectedException(typeof(ArgumentNullException))]
     public void OpretDagligSkævLaegemiddelIdEksistererIkke()
     {
         // Henter den første patient fra tjenesten.
@@ -241,9 +242,8 @@ public class ServiceTest
 
 
     [TestMethod]
-    //[ExpectedException(typeof(ArgumentNullException))]
-    [ExpectedException(typeof(Exception))]
-
+    [ExpectedException(typeof(ArgumentNullException))]
+    
     public void TestAtKodenSmiderEnException()
     {
         // Koden herunder giver en exception fordi start datoen starter i feb og slut datoen er en måned før

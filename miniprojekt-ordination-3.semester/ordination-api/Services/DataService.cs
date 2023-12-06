@@ -133,20 +133,20 @@ public class DataService
 
     public PN OpretPN(int patientId, int laegemiddelId, double antal, DateTime startDato, DateTime slutDato)
     {
-        if (slutDato >= startDato)
+        if (slutDato >= startDato && startDato <= DateTime.Now)
         {
             if (antal > 0)
             {
                 Patient patient = db.Patienter.FirstOrDefault(p => p.PatientId == patientId);
                 if (patient == null)
                 {
-                    throw new ArgumentException("Patienten med det angivne ID eksisterer ikke.", nameof(patientId));
+                    throw new ArgumentNullException("Patienten med det angivne ID eksisterer ikke.", nameof(patientId));
                 }
 
                 Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(l => l.LaegemiddelId == laegemiddelId);
                 if (laegemiddel == null)
                 {
-                    throw new ArgumentException("Lægemidlet med det angivne ID eksisterer ikke.", nameof(laegemiddelId));
+                    throw new ArgumentNullException("Lægemidlet med det angivne ID eksisterer ikke.", nameof(laegemiddelId));
                 }
 
                 PN pn = new PN(startDato, slutDato, antal, laegemiddel);
@@ -174,17 +174,24 @@ public class DataService
         throw new NotImplementedException();
     }
 
-    public DagligFast OpretDagligFast(int patientId, int laegemiddelId, 
-        double antalMorgen, double antalMiddag, double antalAften, double antalNat, 
+    public DagligFast OpretDagligFast(int patientId, int laegemiddelId,
+        double antalMorgen, double antalMiddag, double antalAften, double antalNat,
         DateTime startDato, DateTime slutDato) {
-        if (slutDato >= startDato)
+        if (slutDato >= startDato && startDato <= DateTime.Now)
         {
             if (antalMorgen >= 0 && antalMiddag >= 0 && antalAften >= 0 && antalNat >= 0)
             {
-                Patient patient = db.Patienter.Find(patientId);
+                Patient patient = db.Patienter.FirstOrDefault(p => p.PatientId == patientId);
+                if (patient == null)
+                {
+                    throw new ArgumentNullException("Patienten med det angivne ID eksisterer ikke.", nameof(patientId));
+                }
 
-                Laegemiddel laegemiddel = db.Laegemiddler.Find(laegemiddelId);
-
+                Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(l => l.LaegemiddelId == laegemiddelId);
+                if (laegemiddel == null)
+                {
+                    throw new ArgumentNullException("Lægemidlet med det angivne ID eksisterer ikke.", nameof(laegemiddelId));
+                }
                 DagligFast dagligFast = new DagligFast(startDato, slutDato, laegemiddel, antalMorgen, antalMiddag, antalAften, antalNat);
                 db.Ordinationer.Add(dagligFast);
 
@@ -199,41 +206,50 @@ public class DataService
             }
             else
             {
-                throw new InvalidOperationException ("Alle værdier skal være positive");
+                throw new ArgumentNullException("Alle skal være positive");
             }
         }
         else
         {
-            throw new InvalidOperationException ("slutDato må ikke være før startDato");
+            throw new ArgumentException("SlutDato må ikke være før StartDato.", nameof(slutDato));
         }
-     }
+        }
 
-    public DagligSkæv OpretDagligSkaev(int patientId, int laegemiddelId, Dosis[] doser, DateTime startDato, DateTime slutDato) {
-        if (slutDato >= startDato && startDato >= DateTime.Now)
-        {
-            foreach (Dosis dosis in doser)
+        public DagligSkæv OpretDagligSkaev(int patientId, int laegemiddelId, Dosis[] doser, DateTime startDato, DateTime slutDato) {
+            if (slutDato >= startDato && startDato < DateTime.Now)
             {
-                if (dosis.antal < 0)
+                foreach (Dosis dosis in doser)
                 {
-                    throw new ArgumentNullException ("Antallet skal have en positiv værdi");
+                    if (dosis.antal < 0)
+                    {
+                        throw new ArgumentNullException("Antallet skal have en positiv værdi");
+                    }
                 }
+
+
+                Patient patient = db.Patienter.FirstOrDefault(p => p.PatientId == patientId);
+                if (patient == null)
+                {
+                    throw new ArgumentNullException("Patienten med det angivne ID eksisterer ikke.", nameof(patientId));
+                }
+
+                Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(l => l.LaegemiddelId == laegemiddelId);
+                if (laegemiddel == null)
+                {
+                    throw new ArgumentNullException("Lægemidlet med det angivne ID eksisterer ikke.", nameof(laegemiddelId));
+                }
+                DagligSkæv skæv = new DagligSkæv(startDato, slutDato, laegemiddel, doser);
+                db.DagligSkæve.Add(skæv);
+                patient.ordinationer.Add(skæv);
+                db.SaveChanges();
+
+                return null!;
             }
-
-            
-            Patient patient = db.Patienter.FirstOrDefault(p => p.PatientId == patientId);
-            Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(l => l.LaegemiddelId == laegemiddelId);
-            DagligSkæv skæv = new DagligSkæv(startDato,slutDato, laegemiddel, doser);
-            db.DagligSkæve.Add(skæv);
-            patient.ordinationer.Add(skæv);
-            db.SaveChanges();
-
-            return null!;
+            else
+            {
+                throw new ArgumentNullException("SlutDato må ikke være før StartDato.", nameof(slutDato));
+            }
         }
-        else
-        {
-                throw new ArgumentNullException("SlutDato må ikke være før StartDato");
-            }
-    }
 
     public string AnvendOrdination(int id, Dato dato)
     {
