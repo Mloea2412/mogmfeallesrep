@@ -8,6 +8,7 @@ using shared.Model;
 using shared;
 using static shared.Util;
 
+
 [TestClass]
 public class ServiceTest
 {
@@ -98,7 +99,7 @@ public class ServiceTest
     }
 
 
-
+  
 
     // TEST AF PN
 
@@ -122,20 +123,18 @@ public class ServiceTest
     }
 
 
-    [TestMethod] // Testmetode for at bekræfte, at oprettelse af en PN fejler korrekt, når PatientId ikke eksisterer (PatientId 20).
+    [TestMethod]
     public void OpretPNPatientIdeEksistererikke()
     {
-        // Henter den første patient fra tjenesten.
-        Patient patient = service.GetPatienter().First();
-
         // Henter den første lægemiddel fra tjenesten.
         Laegemiddel lm = service.GetLaegemidler().First();
 
         // Forsøger at oprette en PN med en ikke-eksisterende patient (PatientId 20).
-        service.OpretPN(20, lm.LaegemiddelId, 3, DateTime.Now, DateTime.Now.AddDays(2));
-
-        // Udskriver en besked til konsollen for at bekræfte, at oprettelsen af PN fejlede korrekt.
-        Console.WriteLine("Oprettelse af PN er korrekt fejlet, da patientId ikke eksisterer.");
+        Assert.ThrowsException<ArgumentException>(() =>
+        {
+            service.OpretPN(20, lm.LaegemiddelId, 3, DateTime.Now, DateTime.Now.AddDays(2));
+        });
+        Console.WriteLine("Patienten med det angivne ID eksisterer ikke.");
     }
 
 
@@ -235,7 +234,6 @@ public class ServiceTest
 
 
 
-   
 
 
 
@@ -264,3 +262,4 @@ public class ServiceTest
            }, new DateTime(2023, 2, 01), new DateTime(2023, 01, 01));
     }
 }
+

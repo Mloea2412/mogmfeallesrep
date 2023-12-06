@@ -130,6 +130,7 @@ public class DataService
         return db.Laegemiddler.ToList();
     }
 
+
     public PN OpretPN(int patientId, int laegemiddelId, double antal, DateTime startDato, DateTime slutDato)
     {
         if (slutDato >= startDato)
@@ -137,24 +138,40 @@ public class DataService
             if (antal > 0)
             {
                 Patient patient = db.Patienter.FirstOrDefault(p => p.PatientId == patientId);
+                if (patient == null)
+                {
+                    throw new ArgumentException("Patienten med det angivne ID eksisterer ikke.", nameof(patientId));
+                }
+
                 Laegemiddel laegemiddel = db.Laegemiddler.FirstOrDefault(l => l.LaegemiddelId == laegemiddelId);
-                PN pn = new PN(startDato,slutDato, antal, laegemiddel);
+                if (laegemiddel == null)
+                {
+                    throw new ArgumentException("Lægemidlet med det angivne ID eksisterer ikke.", nameof(laegemiddelId));
+                }
+
+                PN pn = new PN(startDato, slutDato, antal, laegemiddel);
                 db.PNs.Add(pn);
                 patient.ordinationer.Add(pn);
 
                 db.SaveChanges();
 
-                return null!;
+                return pn;
             }
             else
             {
-                throw new InvalidOperationException("Antal skal være positivt");
+                throw new ArgumentOutOfRangeException("Antal skal være positivt.", nameof(antal));
             }
         }
         else
         {
-            throw new InvalidOperationException("SlutDato må ikke være før StartDato");
+            throw new ArgumentException("SlutDato må ikke være før StartDato.", nameof(slutDato));
         }
+
+    }
+
+        private Laegemiddel GetLaegemiddel(int laegemiddelId)
+    {
+        throw new NotImplementedException();
     }
 
     public DagligFast OpretDagligFast(int patientId, int laegemiddelId, 
@@ -182,12 +199,12 @@ public class DataService
             }
             else
             {
-                throw new Exception("Alle værdier skal være positive");
+                throw new InvalidOperationException ("Alle værdier skal være positive");
             }
         }
         else
         {
-            throw new Exception("slutDato må ikke være før startDato");
+            throw new InvalidOperationException ("slutDato må ikke være før startDato");
         }
      }
 
@@ -198,7 +215,7 @@ public class DataService
             {
                 if (dosis.antal < 0)
                 {
-                    throw new Exception("Antallet skal have en positiv værdi");
+                    throw new ArgumentNullException ("Antallet skal have en positiv værdi");
                 }
             }
 
@@ -214,7 +231,7 @@ public class DataService
         }
         else
         {
-                throw new Exception("SlutDato må ikke være før StartDato");
+                throw new ArgumentNullException("SlutDato må ikke være før StartDato");
             }
     }
 
@@ -254,7 +271,7 @@ public class DataService
         }
         else if (patient.vaegt <= 0)
         {
-            throw new Exception("Vægt skal gives som en positiv værdi");
+            throw new InvalidOperationException("Vægt skal gives som en positiv værdi");
         }
 
         return AnDosis;
