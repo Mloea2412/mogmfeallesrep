@@ -135,7 +135,7 @@ public class DataService
     {
         if (slutDato >= startDato && startDato <= DateTime.Now)
         {
-            if (antal > 0)
+            if (antal >= 0)
             {
                 Patient patient = db.Patienter.FirstOrDefault(p => p.PatientId == patientId);
                 if (patient == null)

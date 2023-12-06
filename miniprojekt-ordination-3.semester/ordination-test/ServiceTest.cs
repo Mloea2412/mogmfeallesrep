@@ -97,13 +97,9 @@ public class ServiceTest
         // Tjekker, om der nu er to daglige skæve objekter i tjenesten. Forventningen er, at antallet er steget fra 1 til 2.
         Assert.AreEqual(2, service.GetDagligSkæve().Count());
     }
-
-
-  
-
-    // TEST AF PN
-
-    [TestMethod] // Testmetode for at oprette en PN.
+ 
+    // TEST AF OPRETPN
+    [TestMethod] 
     public void OpretPN()
     {
         // Henter den første patient fra tjenesten.
@@ -123,28 +119,100 @@ public class ServiceTest
     }
 
 
+    // TEST AF PN
 
-    [TestMethod]
+    [TestMethod]// TC2
     [ExpectedException(typeof(ArgumentNullException))]
-    public void OpretPNPatientIdeEksistererikke()
+    public void TC3OpretPNPatientIdUgyldigInt()
     {
         // Henter den første lægemiddel fra tjenesten.
         Laegemiddel lm = service.GetLaegemidler().First();
 
-        // Forsøger at oprette en PN med en ikke-eksisterende patient (PatientId 20).
-        
-            service.OpretPN(20, lm.LaegemiddelId, 3, DateTime.Now, DateTime.Now.AddDays(2));
-        
-        Console.WriteLine("Patienten med det angivne ID eksisterer ikke.");
+        // Forsøger at oprette en PN med en ikke-eksisterende patient (PatientId 11).
+
+        service.OpretPN(-2, lm.LaegemiddelId, 2, DateTime.Now, DateTime.Now.AddDays(2));
+
+        Console.WriteLine("Oprettelse af PN er korrekt fejlet, patienten id skal være potisiv int.");
     }
 
 
+    [TestMethod] // TC3
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TC3OpretPNPatientIdeEksistererikke()
+    {
+        // Henter den første lægemiddel fra tjenesten.
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        // Forsøger at oprette en PN med en ikke-eksisterende patient (PatientId 11).
+        
+        service.OpretPN(11, lm.LaegemiddelId, 8, DateTime.Now, DateTime.Now.AddDays(2));
+        
+        Console.WriteLine("Oprettelse PN er fejlet korrekt, patientenId eksisterer ikke.");
+    }
+
+
+    [TestMethod]// TC4
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TC4OpretPNLaegemiddelIdUgyldigInt()
+    {
+        Patient patient = service.GetPatienter().First();
+        // Henter den første lægemiddel fra tjenesten.
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        // Forsøger at oprette en PN med en ikke-eksisterende patient (PatientId 11).
+        service.OpretPN(patient.PatientId, -4, 8, DateTime.Now, DateTime.Now.AddDays(2));
+
+        Console.WriteLine("Oprettelse af PN er korrekt fejlet, patientId skal være potisiv int.");
+    }
+
+    [TestMethod]// TC5
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TC5OpretPNLaegemiddelIdUgyldigInt()
+    {
+        Patient patient = service.GetPatienter().First();
+        // Henter den første lægemiddel fra tjenesten.
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        // Forsøger at oprette en PN med en ikke-eksisterende patient (PatientId 11).
+        service.OpretPN(patient.PatientId, 11, 8, DateTime.Now, DateTime.Now.AddDays(2));
+
+        Console.WriteLine("Oprettelse af PN er korrekt fejlet, patientId eksisterer ikke i databasen.");
+    }
+
+    [TestMethod]// TC6
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TC6OpretPNSlutDatoSkalVæreStørreEllerLigStartDato()
+    {
+        Patient patient = service.GetPatienter().First();
+        // Henter den første lægemiddel fra tjenesten.
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        // Forsøger at oprette en PN med en ikke-eksisterende patient (PatientId 11).
+        service.OpretPN(3, 2, 8, DateTime.Now.AddDays(4), DateTime.Now);
+
+        Console.WriteLine("Oprettelse af PN er korrekt fejlet, da slutDato skal være større eller lig startDato.");
+    }
+
+    /*// Start dato skal sættes til 2023,12,6 (som vil virke i morgen, idag med 2023,12,5)
+    [TestMethod]// TC7
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TC6OpretPNStartDatoSkalVæreValid()
+    {
+        Patient patient = service.GetPatienter().First();
+        // Henter den første lægemiddel fra tjenesten.
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        // Forsøger at oprette en PN med en ikke-eksisterende patient (PatientId 11).
+        service.OpretPN(3, 2, 8, DateTime.Now, DateTime.Now);
+
+        Console.WriteLine("Oprettelse af PN er korrekt fejlet, da startDato skal være en valid dato");
+    }*/
 
     // TEST AF DAGLIG FAST
 
-    [TestMethod] // Testmetode for at validere, at en ArgumentNullException kastes ved forsøg på at oprette en daglig fast dosis med en ikke-eksisterende patient (PatientId 33).
+    [TestMethod] //TC2
     [ExpectedException(typeof(ArgumentNullException))]
-    public void OpretDagligFastPatientEksistererIkke()
+    public void TC2OpretDagligFastPatientIdNegativInt()
     {
         // Henter den første patient fra tjenesten.
         Patient patient = service.GetPatienter().First();
@@ -154,21 +222,35 @@ public class ServiceTest
 
         // Forsøger at oprette en daglig fast dosis med en ikke-eksisterende patient (PatientId 33).
         // Forventningen er, at en ArgumentNullException kastes.
-        service.OpretDagligFast(33, lm.LaegemiddelId, 8, 2, 2, 6, DateTime.Now, DateTime.Now.AddDays(2));
+        service.OpretDagligFast(-5, lm.LaegemiddelId, 4, 1, 2, 6, DateTime.Now, DateTime.Now.AddDays(2));
+
+        // Udskriver en besked til konsollen for at bekræfte, at oprettelsen af daglig fast dosis fejlede korrekt.
+        Console.WriteLine("Oprettelse af daglig fast er korrekt fejlet, da patientId skal være positiv int.");
+    }
+
+    // TEST CASE 3: PATIENTID ISN'T FOUND IN THE DATABASE (11)
+    [TestMethod] // Testmetode for at validere, at en ArgumentNullException kastes ved forsøg på at oprette en daglig fast dosis med en ikke-eksisterende patient (PatientId 33).
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TC3OpretDagligFastPatientEksistererIkke()
+    {
+        // Henter den første patient fra tjenesten.
+        Patient patient = service.GetPatienter().First();
+
+        // Henter den første lægemiddel fra tjenesten.
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        // Forsøger at oprette en daglig fast dosis med en ikke-eksisterende patient (PatientId 33).
+        // Forventningen er, at en ArgumentNullException kastes.
+        service.OpretDagligFast(11, lm.LaegemiddelId, 4, 1, 2, 6, DateTime.Now, DateTime.Now.AddDays(4));
 
         // Udskriver en besked til konsollen for at bekræfte, at oprettelsen af daglig fast dosis fejlede korrekt.
         Console.WriteLine("Oprettelse af daglig fast er korrekt fejlet, da patientId ikke eksisterer.");
     }
 
-
-
-
-    // TEST AF DAGLIG SKÆV
-
-
-    [TestMethod] // Testmetode for at validere, at en ArgumentNullException kastes ved forsøg på at oprette en daglig skæv dosis med ugyldig PatientId (-2).
+    // TEST CASE 4: LAEGEMIDDELID IS NOT FOUND UN THE DATABASE (11)
+    [TestMethod] // Testmetode for at validere, at en ArgumentNullException kastes ved forsøg på at oprette en daglig fast dosis med en ikke-eksisterende patient (PatientId 33).
     [ExpectedException(typeof(ArgumentNullException))]
-    public void OpretDagligSkævUgyldigPatientId()
+    public void TC4OpretDagligFastLaegemiddelEksistererIkke()
     {
         // Henter den første patient fra tjenesten.
         Patient patient = service.GetPatienter().First();
@@ -176,69 +258,228 @@ public class ServiceTest
         // Henter den første lægemiddel fra tjenesten.
         Laegemiddel lm = service.GetLaegemidler().First();
 
-        // Opretter en dosis med et klokkeslæt på 04:00 og en mængde på 6.
-        Dosis[] doser = new Dosis[] { new Dosis(CreateTimeOnly(4, 0, 0), 6) };
+        // Forsøger at oprette en daglig fast dosis med en ikke-eksisterende patient (PatientId 33).
+        // Forventningen er, at en ArgumentNullException kastes.
+        service.OpretDagligFast(patient.PatientId, 11, 4, 1, 2, 6, DateTime.Now, DateTime.Now.AddDays(4));
 
-        // Forsøger at oprette en daglig skæv dosis med en ugyldig PatientId (-2). Forventningen er, at en InvalidCastException kastes.
-        service.OpretDagligSkaev(-2, lm.LaegemiddelId, doser, DateTime.Now, DateTime.Now.AddDays(2));
+        // Udskriver en besked til konsollen for at bekræfte, at oprettelsen af daglig fast dosis fejlede korrekt.
+        Console.WriteLine("Oprettelse af daglig fast er korrekt fejlet, da laegemiddelId ikke eksisterer.");
+    }
 
-        // Udskriver en besked til konsollen for at bekræfte, at oprettelsen af daglig skæv dosis fejlede korrekt.
-        Console.WriteLine("Oprettelse af daglig skæv er fejlet korrekt, da patient id skal være et positivt integer.");
+    // TEST CASE 5: LAEGEMIDDEL MUST BE A POSITIVE INT (-2)
+    [TestMethod] // Testmetode for at validere, at en ArgumentNullException kastes ved forsøg på at oprette en daglig fast dosis med en ikke-eksisterende patient (PatientId 33).
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TC5OpretDagligFastLaegemiddelIdNegativInt()
+    {
+        // Henter den første patient fra tjenesten.
+        Patient patient = service.GetPatienter().First();
+
+        // Henter den første lægemiddel fra tjenesten.
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        // Forsøger at oprette en daglig fast dosis med en ikke-eksisterende patient (PatientId 33).
+        // Forventningen er, at en ArgumentNullException kastes.
+        service.OpretDagligFast(patient.PatientId, -2, 4, 1, 2, 6, DateTime.Now, DateTime.Now.AddDays(4));
+
+        // Udskriver en besked til konsollen for at bekræfte, at oprettelsen af daglig fast dosis fejlede korrekt.
+        Console.WriteLine("Oprettelse af daglig fast er korrekt fejlet, da laegemiddelId skal være posistiv int.");
+    }
+
+    // TEST CASE 6: ANTALMORGEN MUST BE A POSITIVE DOUBLE (-4)
+    [TestMethod] // Testmetode for at validere, at en ArgumentNullException kastes ved forsøg på at oprette en daglig fast dosis med en ikke-eksisterende patient (PatientId 33).
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TC6OpretDagligFastAntalMorgenNegative()
+    {
+        // Henter den første patient fra tjenesten.
+        Patient patient = service.GetPatienter().First();
+
+        // Henter den første lægemiddel fra tjenesten.
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        // Forsøger at oprette en daglig fast dosis med en ikke-eksisterende patient (PatientId 33).
+        // Forventningen er, at en ArgumentNullException kastes.
+        service.OpretDagligFast(3, 2, -4, 1, 2, 6, DateTime.Now, DateTime.Now.AddDays(4));
+
+        // Udskriver en besked til konsollen for at bekræfte, at oprettelsen af daglig fast dosis fejlede korrekt.
+        Console.WriteLine("Oprettelse af daglig fast er korrekt fejlet, da antalMorgen skal være en posistiv double.");
     }
 
 
+    // TEST CASE 7: ANTALMORGEN MUST BE A POSITIVE DOUBLE (-4)
+    [TestMethod] // Testmetode for at validere, at en ArgumentNullException kastes ved forsøg på at oprette en daglig fast dosis med en ikke-eksisterende patient (PatientId 33).
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TC7OpretDagligFastAntalMiddagNegative()
+    {
+        Patient patient = service.GetPatienter().First();
+        Laegemiddel lm = service.GetLaegemidler().First();
 
-    [TestMethod] // Testmetode for at validere, at en ArgumentNullException kastes ved forsøg på at oprette en daglig skæv dosis med en PatientId, der ikke eksisterer (15).
+        service.OpretDagligFast(3, 2, 4, -1, 2, 6, DateTime.Now, DateTime.Now.AddDays(4));
+        Console.WriteLine("Oprettelse af daglig fast er korrekt fejlet, da antalMiddag skal være en positiv double.");
+    }
+
+    // TEST CASE 8: ANTALMORGEN MUST BE A POSITIVE DOUBLE (-4)
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TC8OpretDagligFastAntalMiddagNegative()
+    {
+        Patient patient = service.GetPatienter().First();
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        service.OpretDagligFast(3, 2, 4, 1, -2, 6, DateTime.Now, DateTime.Now.AddDays(4));
+        Console.WriteLine("Oprettelse af daglig fast er korrekt fejlet, da antalAften skal være en positiv double.");
+    }
+
+    // TEST CASE 9: ANTALMORGEN MUST BE A POSITIVE DOUBLE (-4)
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TC9OpretDagligFastAntalMiddagNegative()
+    {
+        Patient patient = service.GetPatienter().First();
+
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        service.OpretDagligFast(3, 2, 4, 1, 2, -6, DateTime.Now, DateTime.Now.AddDays(4));
+
+        Console.WriteLine("Oprettelse af daglig fast er korrekt fejlet, da antalNat skal være positiv double.");
+    }
+    // Start dato skal sættes til 2023,12,6 (som vil virke i morgen, idag med 2023,12,5)
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TC10OpretDagligFastValidStartDato()
+    {
+        Patient patient = service.GetPatienter().First();
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        service.OpretDagligFast(3, 2, 4, 1, 2, 6, DateTime.Now.AddDays(2), DateTime.Now);
+        Console.WriteLine("Oprettelse af daglig fast er korrekt fejlet, da patientId ikke eksisterer.");
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void TC11OpretDagligFastSlutDatoStørreEllerLigStartDato()
+    {
+        Patient patient = service.GetPatienter().First();
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        service.OpretDagligFast(3, 2, 4, 1, 2, 6, DateTime.Now.AddDays(4), DateTime.Now);
+        Console.WriteLine("Oprettelse af daglig fast er korrekt fejlet, startDato skal være større eller lig slutdate");
+    }
+
+    // TEST AF DAGLIG SKÆV
+
+    [TestMethod] // TC2
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void OpretDagligSkævPatientIdNegativInt()
+    {
+        Patient patient = service.GetPatienter().First();
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        Dosis[] doser = new Dosis[] { new Dosis(CreateTimeOnly(12, 0, 0), 3) };
+        service.OpretDagligSkaev(-1, lm.LaegemiddelId, doser, DateTime.Now, DateTime.Now.AddDays(4));
+
+        Console.WriteLine("Oprettelse af daglig skæv er korrekt fejlet, da patientId skal være positiv int.");
+    }
+    [TestMethod] // TC3
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void OpretDagligSkævUgyldigPatientId()
+    {
+        Patient patient = service.GetPatienter().First();
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        Dosis[] doser = new Dosis[] { new Dosis(CreateTimeOnly(12, 0, 0), 3) };
+        service.OpretDagligSkaev(11, lm.LaegemiddelId, doser, DateTime.Now, DateTime.Now.AddDays(4));
+
+        Console.WriteLine("Oprettelse af daglig skæv er korrekt fejlet, da patientId ikke eksisterer.");
+    }
+
+    
+    // TEST CASE 3: PATIENTID NOT FOUND IN THE DATABSE
+    [TestMethod]
     [ExpectedException(typeof(ArgumentNullException))]
     public void OpretDagligSkævPatientIdEksistererIkke()
     {
-        // Henter den første patient fra tjenesten.
         Patient patient = service.GetPatienter().First();
-
-        // Henter den første lægemiddel fra tjenesten.
         Laegemiddel lm = service.GetLaegemidler().First();
 
-        // Opretter en dosis med et klokkeslæt på 04:00 og en mængde på 6.
-        Dosis[] doser = new Dosis[] { new Dosis(CreateTimeOnly(12, 0, 0), 4) };
+        Dosis[] doser = new Dosis[] { new Dosis(CreateTimeOnly(12, 0, 0), 3) };
+        service.OpretDagligSkaev(15, lm.LaegemiddelId, doser, DateTime.Now, DateTime.Now.AddDays(4));
 
-        // Forsøger at oprette en daglig skæv dosis med en PatientId (15), der ikke eksisterer i databasen.
-        // Forventningen er, at en InvalidCastException kastes.
-        service.OpretDagligSkaev(15, lm.LaegemiddelId, doser, DateTime.Now, DateTime.Now.AddDays(2));
-
-        // Udskriver en besked til konsollen for at bekræfte, at oprettelsen af daglig skæv dosis fejlede korrekt.
         Console.WriteLine("Oprettelse af daglig skæv er fejlet korrekt, da det pågældende patient id ikke eksisterer i databasen.");
     }
 
 
-
-    [TestMethod] // Testmetode for at validere, at en ArgumentNullException kastes ved forsøg på at oprette en daglig skæv dosis med en LaegemiddelId, der ikke eksisterer (23).
+    [TestMethod]// TEST CASE 4: LAGEMIDDEL NOT FOUND IN THE DATABASE
     [ExpectedException(typeof(ArgumentNullException))]
     public void OpretDagligSkævLaegemiddelIdEksistererIkke()
     {
-        // Henter den første patient fra tjenesten.
         Patient patient = service.GetPatienter().First();
-
-        // Henter den første lægemiddel fra tjenesten.
         Laegemiddel lm = service.GetLaegemidler().First();
 
-        // Opretter en dosis med et klokkeslæt på 04:00 og en mængde på 6.
-        Dosis[] doser = new Dosis[] { new Dosis(CreateTimeOnly(12, 0, 0), 4) };
+        Dosis[] doser = new Dosis[] { new Dosis(CreateTimeOnly(12, 0, 0), 3) };
+        service.OpretDagligSkaev(patient.PatientId, 11, doser, DateTime.Now, DateTime.Now.AddDays(4));
 
-        // Forsøger at oprette en daglig skæv dosis med en LaegemiddelId (23), der ikke eksisterer i databasen.
-        // Forventningen er, at en InvalidCastException kastes.
-        service.OpretDagligSkaev(patient.PatientId, 23, doser, DateTime.Now, DateTime.Now.AddDays(2));
+        Console.WriteLine("Oprettelse af daglig skæv er fejlet korrekt, da det pågældende lægemiddelId ikke eksisterer i databasen.");
+    }
 
-        // Udskriver en besked til konsollen for at bekræfte, at oprettelsen af daglig skæv dosis fejlede korrekt.
-        Console.WriteLine("Oprettelse af daglig skæv er fejlet korrekt, da det pågældende lægemiddel id ikke eksisterer i databasen.");
+
+   
+    // TEST CASE 5: LAEGEMIDDELID MUST BE A POSITIVE INT
+    [TestMethod] 
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void OpretDagligSkævLaegemiddelIdIkkeGyldigInt()
+    {
+        Patient patient = service.GetPatienter().First();
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        Dosis[] doser = new Dosis[] { new Dosis(CreateTimeOnly(12, 0, 0), 3) };
+        service.OpretDagligSkaev(patient.PatientId, -1, doser, DateTime.Now, DateTime.Now.AddDays(4));
+
+        Console.WriteLine("Oprettelse af daglig skæv er fejlet korrekt, da det pågældende lægemiddelId skal være en positiv int.");
     }
 
 
 
+    // TEST CASE 6
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void OpretDagligSkævDoserNotNull()
+    {
+        Patient patient = service.GetPatienter().First();
+        Laegemiddel lm = service.GetLaegemidler().First();
 
+        Dosis[] doser = new Dosis[] { new Dosis(CreateTimeOnly(12, 0, 0), 0) };
+        service.OpretDagligSkaev(patient.PatientId, -1, doser, DateTime.Now, DateTime.Now.AddDays(4));
 
+        Console.WriteLine("Oprettelse af daglig skæv er fejlet korrekt, da doser ikke må være 0");
+    }
 
+    // TEST CASE 7// Start dato skal sættes til 2023,12,6 (som vil virke i morgen, idag med 2023,12,5)
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void OpretDagligSkævValidStartDato()
+    {
+        Patient patient = service.GetPatienter().First();
+        Laegemiddel lm = service.GetLaegemidler().First();
 
+        Dosis[] doser = new Dosis[] { new Dosis(CreateTimeOnly(12, 0, 0), 0) };
+        service.OpretDagligSkaev(patient.PatientId, -1, doser, DateTime.Now, DateTime.Now.AddDays(4));
 
+        Console.WriteLine("Oprettelse af daglig skæv er fejlet korrekt, da startDato skal være en valid dato");
+    }
+
+    // TEST CASE 7// 
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException))]
+    public void OpretDagligSkævSlutDatoStørreEllerLigStartDato()
+    {
+        Patient patient = service.GetPatienter().First();
+        Laegemiddel lm = service.GetLaegemidler().First();
+
+        Dosis[] doser = new Dosis[] { new Dosis(CreateTimeOnly(12, 0, 0), 0) };
+        service.OpretDagligSkaev(patient.PatientId, -1, doser, DateTime.Now, DateTime.Now.AddDays(4));
+
+        Console.WriteLine("Oprettelse af daglig skæv er fejlet korrekt, da slutDato skal være større eller lig startDato");
+    }
 
 
     [TestMethod]
